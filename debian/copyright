@@ -1,0 +1,18 @@
+This package was Debianised by Steve Haslam <araqnid@debian.org> on
+21st May 1999.
+Then it was maintained by Sebastian Rittau <srittau@debian.org> from 12 Jul
+2003 to 18 Feb 2005.
+Then it was maintained by Loic Minier <lool@dooz.org>.
+
+It was downloaded from <http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/>.
+
+Copyright:
+
+This package is copyrighted under the GPL.  Please see
+/usr/share/common-licenses/GPL on a Debian system for the full text.
+
+Authors (as listed in the upstream AUTHORS file):
+
+Damon Chaplin <damon@gnome.org>
+Owen Taylor <otaylor@redhat.com>
+
