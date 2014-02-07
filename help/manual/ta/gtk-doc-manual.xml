@@ -10,7 +10,7 @@
 <book id="index" lang="ta">
   <bookinfo>
     <title>ஜிடிகே டாக் கையேடு</title>
-    <edition>1.12</edition>
+    <edition>1.18</edition>
     <abstract role="description"><para>உருவாக்குவோருக்கான ஜிடிகே டாக்(GTK-Doc) பயன்பாட்டு பயனர் கையேடு </para></abstract>
     <authorgroup>
       <author>
@@ -46,8 +46,12 @@
       <address><email>gtk-doc-list@gnome.org</email></address>
     </publisher>
     <copyright>
-      <year>2000, 2005, 2007-2009</year>
-      <holder>டேன் மீயத் க்ரிஸ் லைட்டில் மற்றும் ஸ்டீபன் கோஸ்ட்</holder>
+      <year>2000, 2005</year>
+      <holder>Dan Mueth and Chris Lyttle</holder>
+    </copyright>
+    <copyright>
+      <year>2007-2011</year>
+      <holder>Stefan Sauer (Kost)</holder>
     </copyright>
 
     <!-- translators: uncomment this:
@@ -61,8 +65,32 @@
       <para>நீங்கள் இலவச மென் பொருள் அமைப்பினால் வெளியிடப்பட்ட<citetitle> ஜிஎன்யு பொது ஆவண அனுமதிக்கான</citetitle> இந்த 1.1 ம் பதிப்பு அல்லது அடுத்த பதிப்புகள் விதிகளின் படி நீங்கள் (விருப்பப்படி) மாற்றமில்லா தொகுதிகள், முன் அட்டை உரைகள், பின் அட்டை உரைகள் ஆக்கியன நீங்கலாக  இதை பிரதி எடுக்கலாம், வினியோகிக்கலாம், மாற்றலாம். அனுமதியின் பிரதி இங்குள்ளது:<link linkend="fdl">included</link></para>
       <para>நிறுவனங்களால் அவர்களது பொருட்கள், சேவைகளை குறிப்பிட பயனாகும் பல பெயர்களை அவர்களது வியாபார குறியாக சொல்கிறார்கள். அத்தகைய பெயர்கள் க்னோம் ஆவணங்களில் காணப்படுமானால், அவை க்னோம் ஆவண திட்ட உறுப்பினருக்கு தெரிவிக்கப்பட்டால், அவை தலை எழுத்துக்களாக அலல்து முதல் எழுத்து தலை எழுத்தாக  காட்டப்படும். </para>
     </legalnotice>
-    
+
     <revhistory>
+      <!--revision>
+        <revnumber>1.18.1</revnumber>
+        <date>15 Sep 2011</date>
+        <authorinitials>sk</authorinitials>
+        <revremark>development version, markdown support</revremark>
+      </revision-->
+      <revision>
+        <revnumber>1.18</revnumber>
+        <date>14 sep 2011</date>
+        <authorinitials>sk</authorinitials>
+        <revremark>bug fixes, speedups, markdown support</revremark>
+      </revision>
+      <revision>
+        <revnumber>1.17</revnumber>
+        <date>26 Feb 2011</date>
+        <authorinitials>sk</authorinitials>
+        <revremark>urgent bug fix update</revremark>
+      </revision>
+      <revision>
+        <revnumber>1.16</revnumber>
+        <date>14 Jan 2011</date>
+        <authorinitials>sk</authorinitials>
+        <revremark>bugfixes, layout improvements</revremark>
+      </revision>
       <revision>
         <revnumber>1.15</revnumber>
         <date>21 May 2010</date>
@@ -133,13 +161,13 @@
             code looking for declarations of functions, macros, enums, structs, and unions.
             It creates the file <filename>&lt;module&gt;-decl-list.txt</filename> containg a list of the
             declarations, placing them into sections according to which header file they
-            are in. On the first run this file is copied to <filename>&lt;module&gt;-sections.txt</filename>
+            are in. On the first run this file is copied to <filename>&lt;module&gt;-sections.txt</filename>.
             The author can rearrange the sections, and the order of the
             declarations within them, to produce the final desired order.
             The second file it generates is <filename>&lt;module&gt;-decl.txt</filename>.
             This file contains the full declarations found by the scanner. If for
-            some reason one would like some sybols to show up in the docs, where
-            the full declaration cannot be found by th scanner or the declaration
+            some reason one would like some symbols to show up in the docs, where
+            the full declaration cannot be found by the scanner or the declaration
             should appear differently, one can place enties similar to the ones in
             <filename>&lt;module&gt;-decl.txt</filename> into <filename>&lt;module&gt;-overrides.txt</filename>.
 
@@ -158,8 +186,23 @@
         </listitem>
 
         <listitem>
-          <para><guilabel>SGML/XML மற்றும் HTML/PDF ஆகியவற்றை உருவாக்குதல். </guilabel><application>gtkdoc-mkdb</application> வார்ப்புரு கோப்புகளை SGML அல்லது XML கோப்புகளாக மாற்றி இங்கு சேமிக்கிறது: <filename class="directory">sgml/</filename> அல்லது <filename class="directory">xml/</filename> துணை அடைவு.மூலத்தில் விசேஷ விமர்சன தொகுதிகளுடன் பங்ஷன் ஆவணங்கள் இருப்பின் அவை இப்போது ஒன்றாக்கப்படும்.  வார்ப்புரு கோப்புகள் இல்லையானால் அது மூலத்தில் இருந்து ஆவணங்களையும் ஆய்வு தரவுகளையும் பயன்படுத்திக்கொள்ளும்.</para>
-          <para><application>gtkdoc-mkhtml</application>  SGML/XML கோப்புக்களை HTML கோப்புக்களாக மாறுகிறது, இந்த துணை அடைவில் <filename class="directory">html/</filename> . அதே போல்<application>gtkdoc-mkpdf</application> SGML/XML கோப்புக்களைPDF ஆவணமாக இப்பெயரிட்டு உருவாக்கும். <filename>&lt;package&gt;.pdf</filename>.</para>
+          <para>
+            <guilabel>Generating the SGML/XML and HTML/PDF.</guilabel>
+
+            <application>gtkdoc-mkdb</application> turns the template files into
+            SGML or XML files in the <filename class="directory">sgml/</filename>
+            or <filename class="directory">xml/</filename> subdirectory.
+            If the source code contains documentation on functions, using the
+            special comment blocks, it gets merged in here. If there are no tmpl files used
+            it only reads docs from sources and introspection data. We recommend
+            to use Docbook XML.
+          </para>
+          <para>
+            <application>gtkdoc-mkhtml</application> turns the SGML/XML files into HTML
+            files in the <filename class="directory">html/</filename> subdirectory.
+            Likewise <application>gtkdoc-mkpdf</application> turns the SGML/XML files into a PDF
+            document called <filename>&lt;package&gt;.pdf</filename>.
+          </para>
           <para> <filename class="directory">sgml/</filename> அல்லது <filename class="directory">xml/</filename> மற்றும்  <filename class="directory">html/</filename>  இல் உள்ள அடைவுகள் எப்போதுமே மேலெழுதப்படும். அவற்றை யாரும் எப்போதும் நேரடியாக திருத்தக்கூடாது.</para>
         </listitem>
 
@@ -247,14 +290,24 @@
   <chapter id="settingup">
     <title>உங்கள் திட்டத்தை அமைத்தல்</title>
 
-    <para> அடுத்த தொகுதிகள் ஜிடிகே-டாக் ஐ உங்கள் திட்டத்தில் ஒருங்கிணைகக் என்ன செய்யவேண்டும் என  விவரிக்கிறது.  இந்த தொகுதிகள் நாம் மீப் ('meep') என்ற திட்டத்துக்கு வேளை செய்வதாக கொள்வோம்.இதற்கு 'libmeep' என ஒரு நூலகமும் பயனர் நிரல்  'meeper' என்றூம் கொள்வோம்.</para>
+    <para>
+      The next sections describe what steps to perform to integrate GTK-Doc into
+      your project. Theses sections assume we work on a project called 'meep'.
+      This project contains a library called 'libmeep' and
+      an end-user app called 'meeper'. We also assume you will be using autoconf
+      and automake. In addition section <link linkend="plain_makefiles">plain
+      makefiles or other build systems</link> will describe the basics needed to
+      work in a different build setup.
+    </para>
 
     <sect1 id="settingup_docfiles">
       <title>தோராய ஆவணம் அமைத்தல்</title>
 
       <para>உங்கள் தலை மட்ட திட்ட அடைவில் இந்த மாதிரி அடைவுகளை உருவாக்குக.docs/reference (இதனால் உங்களுக்கு பயனர் ஆவணம் docs/help உம் கிடைக்கும்). இன்னொரு துணை அடைவு doc-package என் பெயரிட்டு உருவாக்கவும். ஒரே ஒரு நூலகம் உள்ள பொதிகளுக்கு இந்த படி தேவையில்லை</para>
 
-      <para>இது கீழ் கண்டவாறு அமையலாம்: <example><title>எடுத்துக்காட்டு அடைவு அமைப்பு</title>
+      <para>
+        This can then look as shown below:
+        <example><title>எடுத்துக்காட்டு அடைவு அமைப்பு</title>
           <programlisting>
 <![CDATA[
 meep/
@@ -267,7 +320,8 @@ meep/
     meeper/
 ]]>
           </programlisting>
-        </example></para>
+        </example>
+      </para>
     </sect1>
 
     <sect1 id="settingup_autoconf">
@@ -285,7 +339,26 @@ GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
           </programlisting>
         </example>
       </para>
-      
+
+      <para>
+        This will require all developers to have gtk-doc installed. If it is
+        okay for your project to have optional api-doc build setup, you can
+        solve this as below. Keep it as is, as gtkdocize is looking for
+        <function>GTK_DOC_CHECK</function>  at the start of a line.
+        <example><title>Keep gtk-doc optional</title>
+          <programlisting>
+<![CDATA[
+# check for gtk-doc
+m4_ifdef([GTK_DOC_CHECK], [
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
+],[
+AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+])
+]]>
+          </programlisting>
+        </example>
+      </para>
+
       <para>முதல் தரு மதிப்பு வடிவமைப்பு நேரத்தில்  ஜிடிகே டாக் இன் பதிப்பை சோதிக்கிறது. இரண்டாவது தெர்வு தருமதிப்பு. இது இந்த நிரலால் பயன்படுத்தப்படுகிறது. <application>gtkdocize</application>.  <symbol>GTK_DOC_CHECK</symbol> மேக்ரோ பல மாற்றிகளை வடிவமைத்து சேர்க்கிறது:</para>
       <orderedlist>
         <listitem><para>--with-html-dir=PATH : நிறுவிய ஆவணங்களுக்கான பாதை</para></listitem>
@@ -316,11 +389,22 @@ AC_CONFIG_MACRO_DIR(m4)
 
       <para>முதலில் gtkdoc-sources அடைவிலிருந்து உங்கள் திட்டத்தின் ஏபிஐ ஆவண அடைவு ( <filename class="directory">./docs/reference/&lt;package&gt;</filename>) க்கு <filename>Makefile.am</filename> ஐ பிரதி எடுக்கவும். உங்களுக்கு பல டாக் பொதிகள் இருப்பின் இதை ஒவ்வொன்றுக்கும் செய்யவும்.</para>
 
-      <para>அடுத்த படி <filename>Makefile.am</filename> இல் உள்ளதை திருத்துவது. எல்லா அமைப்புகளின் மேலும் அதன் செயலை விவரிக்கும் விமர்சனம் இருக்கும். அனேகமான அமைப்புகள் அவற்றின் கருவிகளூக்கான கூடிதல் கொடிகளே. எல்லா கருவிகளுக்கும் ஒரு மாறி இது போல இருக்கும். <option>&lt;TOOLNAME&gt;_OPTIONS</option>. எல்லா கருவிகளும் ஆதரவளிக்கும் பாராமீட்டர்களை குறிக்க இதை ஆதரிக்கும்: <option>--help</option> </para>
+      <para>
+        The next step is to edit the settings inside the <filename>Makefile.am</filename>.
+        All the settings have a comment above that describes their purpose.
+        Most settings are extra flags passed to the respective tools. Every tool
+        has a variable of the form <option>&lt;TOOLNAME&gt;_OPTIONS</option>.
+        All the tools support <option>--help</option> to list the supported
+        parameters.
+      </para>
 
       <!-- FIXME: explain options ? -->
 
-      <para>ஜிடிகே டாக் (GTK-Doc) ஐdistcheckmake க்கு இலக்காக்க நீங்கள் விரும்பலாம். அடுத்த உதாரணத்தில் உள்ள ஒரு வரி காட்டலை உங்கள் மேல் மட்ட <filename>Makefile.am</filename> க்கு சேர்கவும்:</para>
+      <para>
+        You may also want to enable GTK-Doc for the distcheck make target. Just
+        add the one line shown in the next example to your top-level
+        <filename>Makefile.am</filename>:
+      </para>
 
       <para>
         <example><title>distcheck போது ஜிடிகே- டாக் ஐ செயலாக்குக</title>
@@ -349,16 +433,42 @@ gtkdocize || exit 1
         </example>
       </para>
 
-      <para> <application>gtkdocize</application> நிரலை இயக்கும்போது  <filename>gtk-doc.make</filename> ஐ உங்கள் திட்டத்தின் மூலத்திற்கு அல்லது  <option>—docdir</option>தேர்வில்  நீங்கள் குறிப்பிடும் அடைவுக்கு பிரதி எடுக்கிறது.   அது   <function>GTK_DOC_CHECK</function> அழைப்புக்கும் உங்கள் அமைப்பு குறுநிரலை சோதிக்கிறது .</para>
+      <para>
+        When running <application>gtkdocize</application> it copies
+        <filename>gtk-doc.make</filename> to your project root (or any directory
+        specified by the <option>--docdir</option> option).
+        It also checks you configure script for the <function>GTK_DOC_CHECK</function>
+        invocation. This macro can be used to pass extra parameters to
+        <application>gtkdocize</application>.
+      </para>
 
-      <para>முன்னெல்லாம் ஜிடிகே டாக்(GTK-Doc) வார்ப்புரு கோப்புக்களை உருவாக்கிக்கொண்டு இருந்தது. இதில் உருவாக்குவோர் ஆவணங்களை உள்ளிட்டுக்கொண்டு இருந்தனர். இது அவ்வளவு சரியாக வேலை செய்யவில்லை. சில பதிப்புக்களாக ஜிடிகே டாக்(GTK-Doc)  மூலத்தின் விமர்சனங்களிலிருந்து எல்லா தகவல்களையும் பெற் முடிகிறது.  GTK-Doc 1.9 முதல் வார்புருக்களை தவிர்க்கலாம். ஆகவே நாங்கள் மூல குறியாக்கத்தில் ஆவணங்களுக்கு தேவையான  எல்லா தகவல்களையும் வைக்க வேண்டுகிறோம். <application>gtkdocize</application>இப்போது ஒரு <option>--flavour no-tmpl</option> தேர்ர்வை ஆதரிக்கிறது. இதனால் மேக்பைல் (makefile) வார்ப்புரு பயனை முற்றும் தவிர்த்துவிடுகிறது. நேரடியாக கட்டளை அழைப்புக்கு இந்த தேர்வை சேர்ப்பதுடன்  <symbol>GTKDOCIZE_FLAGS</symbol> எனும் சூழ்நிலை மாறிகளுக்கும் சேர்க்கலாம். அலல்து இரண்டாம் பாராமிட்டராக <symbol>GTK_DOC_CHECK</symbol> இல் அமைக்கலாம். நீங்கள் இதுவரை கைமுறையாக  tmpl இல் கோப்பை மாற்றியது இல்லை; பழைய ஜிடாக் பதிப்பிலிருந்து இடம் மாறுகிறீர்கள் எனில் தயை செய்து அந்த அடைவை  நீக்கி விடுங்கள் (எ.கா. வெர்ஷன் கன்ட்ரோல் அமைப்பு).</para>
+      <para>
+        Historically GTK-Doc was generating template files where developers entered the docs.
+        This turned out to be not so good (e.g. the need for having generated
+        files under version control).
+        Since GTK-Doc 1.9 the tools can get all the information from source comments
+        and thus the templates can be avoided. We encourage people to keep
+        documentation in the code. <application>gtkdocize</application> supports now
+        a <option>--flavour no-tmpl</option> option that chooses a makefile that skips
+        tmpl usage totally. Besides adding the option directly to the command
+        invocation, they can be added also to an environment variable called <symbol>GTKDOCIZE_FLAGS</symbol>
+        or set as a 2nd parameter in <symbol>GTK_DOC_CHECK</symbol> macro in the configure script.
+        If you have never changed file in tmpl by hand and migrating from older gtkdoc versions,
+        please remove the dir (e.g. from version control system).
+      </para>
     </sect1>
 
     <sect1 id="settingup_firstrun">
       <title>டாக் உருவாக்கியை (doc build) இயக்குதல்</title>
 
       <para>இப்போது கட்டுமானத்திற்கு ஆயத்தமாகிவிட்டோம். முதலில் நாம் மீன்டும் <filename>autogen.sh</filename> ஐ இயக்கவேண்டும். இது உங்களுக்கு கட்டமைப்பை இயக்கினால் அதற்கு <option>--enable-gtk-doc</option> தேர்வை தரவும். இல்லையானால் கைமுறையாக இதே தேர்வுடன் <filename>configure</filename> ஐ பிரிதொரு முறை இயக்கவும்.</para>
-      <para>ஆவண அடைவுகளில் (doc-dirs) பல கூடுதல் கோப்புகளை முதல் மேக் இயக்கம் உருவாக்கும்.அவற்றில்ய் முக்கியமானவை: <filename>&lt;package&gt;.types</filename>, <filename>&lt;package&gt;-docs.sgml</filename>, <filename>&lt;package&gt;-sections.txt</filename>.</para>
+      <para>
+        The first make run generates several additional files in the doc-dirs.
+        The important ones are:
+        <filename>&lt;package&gt;.types</filename>,
+        <filename>&lt;package&gt;-docs.xml</filename> (in the past .sgml),
+        <filename>&lt;package&gt;-sections.txt</filename>.
+      </para>
       <para>
         <example><title>டாக் உருவாக்கியை (doc build) இயக்குதல்</title>
           <programlisting>
@@ -375,7 +485,47 @@ make
     <sect1 id="settingup_vcs">
       <title>வெர்ஷன் கன்ட்ரோல் அமைப்புகளுடன் ஒருங்கிணைத்தல்</title>
 
-      <para>குத்து மதிப்பாக சொல்லப்போனால் , நீங்கள் திருத்தும் கோப்புகள்தான் வெர்ஷன் கட்டுப்படுக்கு போக வேண்டும். வழக்கமாக இவைதான் அந்த கோப்புகள்: <filename>&lt;package&gt;.types</filename><filename>&lt;package&gt;-docs.sgml</filename><filename>&lt;package&gt;-sections.txt</filename><filename>Makefile.am</filename></para>
+      <para>
+        As a rule of the thumb, it's those files you edit, that should go under
+        version control. For typical projects it's these files:
+        <filename>&lt;package&gt;.types</filename>,
+        <filename>&lt;package&gt;-docs..xml</filename> (in the past .sgml),
+        <filename>&lt;package&gt;-sections.txt</filename>,
+        <filename>Makefile.am</filename>
+      </para>
+    </sect1>
+
+    <sect1 id="plain_makefiles">
+      <title>Integration with plain makefiles or other build systems</title>
+
+      <para>
+        In the case one does not want to use automake and therfore
+        <filename>gtk-doc.mak</filename> one will need to call the gtkdoc tools
+        in the right order in own makefiles (or other build tools).
+      </para>
+
+      <para>
+        <example><title>Documentation build steps</title>
+          <programlisting>
+<![CDATA[
+DOC_MODULE=meep
+// sources have changed
+gtkdoc-scan --module=$(DOC_MODULE) --source-dir=...
+gtkdoc-scangobj --module=$(DOC_MODULE)
+gtkdoc-mkdb --module=$(DOC_MODULE) --output-format=xml
+// xml files have changed
+mkdir html
+cd html && gtkdoc-mkhtml $(DOC_MODULE) ../meep-docs.xml
+gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html
+]]>
+          </programlisting>
+        </example>
+      </para>
+
+      <para>
+        One will need to look at the <filename>Makefile.am</filename> and
+        <filename>gtk-doc.mak</filename> to pick the extra options needed.
+      </para>
     </sect1>
 
   </chapter>
@@ -383,13 +533,33 @@ make
   <chapter id="documenting">
     <title>குறியாக்கத்தை ஆவணப்படுத்துதல்</title>
 
-    <para>ஜிடிகே டாக்(GTK-Doc) குறீயீட்டை ஆவணமாக்க மூல குறியீட்டின் விமர்சனத்தை சிறப்பு இலக்கணத்துடன் பயன்படுத்துகிறது.  மற்ற மூலங்களிலிருந்தும் அது உங்கள் திட்டத்தின் கட்டுமானத்தை அறிகிறது. அடுத்த தொகுதியில் இந்த விமர்சனன்களின்  சிறப்பு இலக்கணம் குறித்து முழுதும் அறியலாம்.</para>
+    <para>
+      GTK-Doc uses source code comment with a special syntax for code documentation.
+      Further it retrieves information about your project structure from other
+      sources. During the next section you will find all information about the
+      syntax of the comments.
+    </para>
 
     <note>
       <title>ஆவணம் இடுதல்</title>
       <para>முன் காலத்தில்  பெரும்பாலான ஆவணங்கள்  <filename>tmpl</filename> அடைவில் இருக்கும் கோப்புகளில் நிரப்பப்பட வேண்டி இருந்தது. இதில் நஷ்டமாக தகவல்கள்  அவ்வப்போது புதுப்பிக்கப்படவில்லை. மேலும் இவை வெர்ஷன் கட்டுப்பாடு அமைப்புகளுடன் பொருந்தவில்லை</para>
       <para>மேற்கூறிய காரணங்களால் நாங்கள் ஆவணங்களை மூலத்துடன் வைக்கு மாறூ சொல்கிறோம். இந்த கையேடு இந்த முறையை மட்டுமே விவாதிக்கும்.</para>
     </note>
+
+    <para>
+      The scanner can handle the majority of c headers fine. In the case of
+      receiving warnings from the scanner that look like a special case, one can
+      hint GTK-Doc to skip over them.
+      <example><title>ஜிடிகே டாக் விமரிசன தொகுப்பு</title>
+        <programlisting>
+<![CDATA[
+#ifndef __GTK_DOC_IGNORE__
+/* unparseable code here */
+#endif
+]]>
+        </programlisting>
+      </example>
+    </para>
 
     <!--  -->
 
@@ -411,17 +581,65 @@ make
 
       <para>ஆவண ( 'documentation') தொகுதி ஒவ்வொரு அடையாளத்துக்கும் கூட தனித் தனியாகும் .symbol type. Symbol types that get parameters such as functions or macros have the parameter description first followed by a blank line (just a '*'). Afterwards follows the detailed description. All lines (outside program- listings and CDATA sections) just containing a ' *' (blank-asterisk) are converted to paragraph breaks. If you don't want a paragraph break, change that into ' * ' (blank-asterisk-blank-blank).</para>
 
+      <tip>
+        <para>
+          When documenting code, describe two apsects:
+          <itemizedlist>
+             <listitem>
+               <para>
+                 What it is: The name for a class or function can sometimes
+                 be misleading for people coming from a different background.
+                </para>
+             </listitem>
+             <listitem>
+               <para>
+                 What it does: Tell about common uses. Put it in releation
+                 with the other API.
+               </para>
+             </listitem>
+           </itemizedlist>
+        </para>
+      </tip>
+
       <para>ஜிடிகே டாக் </para>
 
       <tip>
-	<para>சிறப்பு குறிகளான  '&lt;', '&gt;', '()', '@', '%', அல்லது '#' ஐ  ஜிடிகே டாக் மாற்றாமல் அப்படியே ஆவணத்தில் பயன்படுத்த அவற்றுக்கான ஹெச்எம்எல் ஐ பயன்படுத்துக: "&amp;lt;", "&amp;gt;", "&amp;lpar;", "&amp;rpar;", "&amp;commat;", "&amp;percnt;" மற்றும் "&amp;num;"  அல்லது பின் சாய்வு கோடால் அவற்றை தனியாக்கலாம்.'\'. </para>
+	     <para>சிறப்பு குறிகளான  '&lt;', '&gt;', '()', '@', '%', அல்லது '#' ஐ  ஜிடிகே டாக் மாற்றாமல் அப்படியே ஆவணத்தில் பயன்படுத்த அவற்றுக்கான ஹெச்எம்எல் ஐ பயன்படுத்துக: "&amp;lt;", "&amp;gt;", "&amp;lpar;", "&amp;rpar;", "&amp;commat;", "&amp;percnt;" மற்றும் "&amp;num;"  அல்லது பின் சாய்வு கோடால் அவற்றை தனியாக்கலாம்.'\'. </para>
       </tip>
 
       <para>
-        DocBook can do more that just links. One can also have lists, tables and
-        examples. To enable the usage of SGML/XML tags inside doc-comments you
-        need to have <option>--sgml-mode</option> in the variable
+        DocBook can do more than just links. One can also have lists, tables and
+        examples. To enable the usage of docbook SGML/XML tags inside
+        doc-comments you need to have <option>--xml-mode</option> or
+        <option>--sgml-mode</option> in the variable
         <symbol>MKDB_OPTIONS</symbol> inside <filename>Makefile.am</filename>.
+      </para>
+
+      <para>
+        Since GTK-Doc-1.18 the tool supports a subset or the
+        <ulink url="http://daringfireball.net/projects/markdown/">markdown language</ulink>.
+        One can use it for sub-headings and simple itemized lists. On older
+        GTK-Doc versions the content will be rendered as it (the list items will
+        appear in one line separated by dashes).
+        <example><title>GTK-Doc comment block using markdown</title>
+          <programlisting>
+<![CDATA[
+/**
+ * identifier:
+ *
+ * documentation ...
+ *
+ * # Sub heading #
+ *
+ * more documentation:
+ * - list item 1
+ * - list item 2
+ *
+ * Even more docs.
+ */
+]]>
+          </programlisting>
+        </example>
       </para>
 
       <tip>
@@ -446,7 +664,7 @@ make
  * @see_also: #MeepSettings
  * @stability: Stable
  * @include: meep/app.h
- * @Image: application.png
+ * @image: application.png
  *
  * The application class handles ...
  */
@@ -477,13 +695,19 @@ make
         <varlistentry>
           <term>@section_id</term>
           <listitem>
-            <para>தொகுதியை இனம் காண தலைப்பைஉதாசீனப்படுத்தும். GObjects ஆகிய &lt;title&gt; வற்றுக்கு  section_id பயன்படும். ஏனைய தொகுதிகளுக்கு அது &lt;MODULE&gt;-&lt;title&gt;.</para>
+            <para>
+              Overrides the use of title as a section identifier. For GObjects
+              the &lt;title&gt; is used as a section_id and for other sections
+              it is &lt;MODULE&gt;-&lt;title&gt;.
+            </para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term>@see_also</term>
           <listitem>
-            <para>இந்த தொகுதியுடன் சம்பந்தப்பட்ட சிம்பல் சின்னங்களின் பட்டியல். </para>
+            <para>
+              A list of symbols that are related to this section.
+            </para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -563,8 +787,8 @@ make
         Each symbol (function, macro, struct, enum, signal and property) is
         documented in a separate block. The block is best placed close to the
         definition of the symbols so that it is easy to keep them in sync.
-        Thus function are usually documented in the c-source and macros, struct
-        and enum in the header file.
+        Thus functions are usually documented in the c-source and macros,
+        structs and enums in the header file.
       </para>
 
       <sect2><title>பொது டேக் ஒட்டுகள்</title>
@@ -767,7 +991,17 @@ typedef struct _FooWidget {
         <para>
           Use <code>/*&lt; private &gt;*/</code> before the private struct fields
           you want to hide. Use <code>/*&lt; public &gt;*/</code> for the reverse
-          behavirour.
+          behaviour.
+        </para>
+
+        <para>
+          Struct comment blocks can also be used for GObjects and GObjectClasses.
+          It is usualy a good idea to add a comment blco for a class, if it has
+          vmethods (as this is how they can be documented). For the GObject
+          itself one can use the related section docs, having a separate block
+          for the instance struct would be useful if the instance has public
+          fields. One disadvantage here is that this creates two index entries
+          of the same name (the structure and the section).
         </para>
 
       </sect2>
@@ -797,7 +1031,7 @@ typedef enum {
         <para>
           Use <code>/*&lt; private &gt;*/</code> before the private enum values
           you want to hide. Use <code>/*&lt; public &gt;*/</code> for the reverse
-          behavirour.
+          behaviour.
         </para>
 
       </sect2>
@@ -966,7 +1200,7 @@ typedef enum {
       There are a couple of extra files, that need to be maintained along with
       the inline source code comments:
       <filename>&lt;package&gt;.types</filename>,
-      <filename>&lt;package&gt;-docs.sgml</filename>,
+      <filename>&lt;package&gt;-docs.xml</filename> (in the past .sgml),
       <filename>&lt;package&gt;-sections.txt</filename>.
     </para>
 
@@ -1003,7 +1237,12 @@ gtk_arrow_get_type
     <sect1 id="metafiles_master">
       <title>முதன்மை ஆவணத்தை திருத்துதல்</title>
 
-      <para>ஜிடிகே டாக் ஜிடிகே டாக் </para>
+      <para>
+        GTK-Doc produces documentation in DocBook SGML/XML. When processing the
+        inline source comments, the GTK-Doc tools generate one documentation
+        page per class or module as a separate file. The master document
+        includes them and place them in an order.
+      </para>
 
       <para>ஜிடிகே டாக் </para>
 
@@ -1089,6 +1328,9 @@ gtk_arrow_get_type
         If your library contains private types which you don't want to appear in
         the object hierarchy and the list of implemented or required interfaces,
         add them to a Private subsection.
+        Wheter you would place GObject and GObjectClass like structs in public
+        or Standard section depends if they have public entries (variables,
+        vmethods).
       </para>
 
       <para>
@@ -1130,11 +1372,11 @@ gtk_arrow_get_type
     <tip>
       <para>ஜிடிகே டாக் </para>
     </tip>
-    
+
     <para>
       One can also look at the files produced by the source code scanner:
       <filename>&lt;package&gt;-decl-list.txt</filename> and
-      <filename>&lt;package&gt;-decl.txt</filename>. The first and can be
+      <filename>&lt;package&gt;-decl.txt</filename>. The first one can be
       compared with the section file if that is manualy maintained. The second
       lists all declarations fromt he headers If a symbol is missing one could
       check if this file contains it.
@@ -1149,13 +1391,102 @@ gtk_arrow_get_type
       <filename>&lt;package&gt;.prerequisites.txt</filename> and
       <filename>&lt;package&gt;.signals.txt</filename>. If there are missing
       symbols in any of those, one can ask gtkdoc to keep the intermedia scanner
-      file for further analysis, but running it as 
+      file for further analysis, but running it as
       <command>GTK_DOC_KEEP_INTERMEDIATE=1 make</command>.
     </para>
   </chapter>
 
+  <chapter id="documenting-others">
+    <title>Documenting other interfaces</title>
+
+    <para>
+      So far we have been using GTK-Doc to document the API of code. The next
+      sections contain suggestions how the tools can be used to document other
+      interfaces too.
+    </para>
+
+    <sect1 id="commandline-interfaces">
+      <title>Commandline options and man pages</title>
+
+      <para>
+        As one can generate man pages for a docbook refentry as well, it sounds
+        like a good idea to use it for that purpose. This way the interface is
+        part of the reference and one gets the man-page for free.
+      </para>
+
+      <sect2 id="commandline-interfaces-file">
+        <title>Document the tool</title>
+
+        <para>
+          Create one refentry file per tool. Following
+          <link linkend="settingup_docfiles">our example</link> we would call it
+          <filename>meep/docs/reference/meeper/meep.xml</filename>. For the xml
+          tags that should be used and can look at generated file in the xml
+          subdirectory as well as examples e.g. in glib.
+        </para>
+      </sect2>
+
+      <sect2 id="commandline-interfaces-configure">
+        <title>Adding the extra configure check</title>
+
+        <para>
+          <example><title>Extra configure checks</title>
+            <programlisting>
+<![CDATA[
+AC_ARG_ENABLE(man,
+              [AC_HELP_STRING([--enable-man],
+                              [regenerate man pages from Docbook [default=no]])],enable_man=yes,
+              enable_man=no)
+
+AC_PATH_PROG([XSLTPROC], [xsltproc])
+AM_CONDITIONAL(ENABLE_MAN, test x$enable_man != xno)
+]]>
+            </programlisting>
+          </example>
+        </para>
+      </sect2>
+
+      <sect2 id="commandline-interfaces-make">
+        <title>Adding the extra makefile rules</title>
+
+        <para>
+          <example><title>Extra configure checks</title>
+            <programlisting>
+<![CDATA[
+man_MANS = \
+       meeper.1
+
+if ENABLE_GTK_DOC
+if ENABLE_MAN
+
+%.1 : %.xml
+        @XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
+endif
+
+BUILT_EXTRA_DIST = $(man_MANS)
+EXTRA_DIST += meep.xml
+]]>
+            </programlisting>
+          </example>
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="dbus-interfaces">
+      <title>DBus interfaces</title>
+
+      <para>
+        (FIXME: http://hal.freedesktop.org/docs/DeviceKit/DeviceKit.html,
+http://cgit.freedesktop.org/DeviceKit/DeviceKit/tree/doc/dbus)
+      </para>
+    </sect1>
+
+  </chapter>
+
   <chapter id="faq">
-    <title>அடிக்கடி கேட்கும் கேள்விகள்</title>
+    <title>Frequently asked questions</title>
 
     <segmentedlist>
       <?dbhtml list-presentation="list"?>
@@ -1194,7 +1525,7 @@ gtk_arrow_get_type
       <seglistitem>
         <seg>A new class does not appear in the docs.</seg>
         <seg>
-          Is the new page xi:included from 
+          Is the new page xi:included from
           <filename>&lt;package&gt;-docs.{xml,sgml}</filename>.
         </seg>
       </seglistitem>
@@ -1242,7 +1573,22 @@ gtk_arrow_get_type
       </seglistitem>
     </segmentedlist>
   </chapter>
-    
+
+  <chapter id="contrib">
+    <title>Tools related to gtk-doc</title>
+
+    <para>
+      GtkDocPlugin - a <ulink url="http://trac-hacks.org/wiki/GtkDocPlugin">Trac GTK-Doc</ulink>
+      integration plugin, that adds api docs to a trac site and integrates with
+      the trac search.
+    </para>
+    <para>
+      Gtkdoc-depscan - a tool (part of gtk-doc) to check used API against since
+      tags in the api to determine the minimum required version.
+    </para>
+
+  </chapter>
+
   <!-- ======== Appendix: FDL ================================== -->
   <!--  
      The GNU Free Documentation License 1.1 in DocBook

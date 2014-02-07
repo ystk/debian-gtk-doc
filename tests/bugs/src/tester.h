@@ -20,6 +20,20 @@ typedef enum {
 } Bug324535;
 
 
+
+/**
+ * bug_481811:
+ * @x: argument
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=481811
+ **/
+static inline double
+bug_481811(double x)
+{
+    return g_random_double_range(x,x*x);
+}
+
+
 /**
  * bug_501038:
  * @a: value
@@ -155,7 +169,7 @@ typedef int (*bug_512155c_function_pointer_t) (unsigned int arg1,
  * BUG_530758:
  *
  * <![CDATA[http://bugzilla.gnome.org/show_bug.cgi?id=530758#c1]]>
- * 
+ *
  * <ulink url="http://bugzilla.gnome.org/show_bug.cgi?id=530758#c1">Test</ulink>
  */
 #define BUG_530758 "dummy"
@@ -233,6 +247,7 @@ void bug_580300b_get_type(gint a);
 void bug_580300c_get_type();
 extern int bug_580300d_get_type();
 
+void bug_597937(void (*function_arg)(int arg1, char arg2, void *));
 
 long int bug_602518a(void);
 unsigned long int bug_602518b(void);
@@ -247,7 +262,7 @@ unsigned int bug_602518c(void);
  */
 union _Bug165425a {
   int i;
-  float f; 
+  float f;
 };
 typedef union _Bug165425a Bug165425a;
 
@@ -286,5 +301,163 @@ long double bug_607445(long double **a, int n);
 signed long bug_610257(const unsigned char *der, int *len);
 
 
-#endif // GTKDOC_TESTER_H
+void bug_623968a(void);
+void bug_623968b(void);
+void bug_623968c(void);
 
+
+#define _BUG_624199(struct_type, n_structs, func) \
+  (struct_type *) (__extension__ ({			\
+    gsize __n = (gsize) (n_structs);			\
+    gsize __s = sizeof (struct_type);			\
+    gpointer __p;					\
+    if (__s == 1)					\
+      __p = g_##func (__n);				\
+    else if (__builtin_constant_p (__n) &&			\
+             (__s == 0 || __n <= G_MAXSIZE / __s))		\
+      __p = g_##func (__n * __s);				\
+    else							\
+      __p = g_##func##_n (__n, __s);			\
+    __p;							\
+  }))
+
+
+const char * const * bug_624200a(void);
+const char ** const bug_624200b(void);
+
+
+/* internal function and macro */
+gchar *_bug_000000a (const gchar *name);
+#define _BUG_000000b (a) (a*a);
+
+#ifndef __GTK_DOC_IGNORE__
+extern int bug_512565(void);
+#endif
+
+void (*bug_638330) (void *arg1,
+     const unsigned char *data,
+     unsigned int length);
+
+
+/**
+ * Bug642998:
+ * @red: red color intensity, from 0–255
+ * @green: green color intensity, from 0–255
+ * @blue: blue color intensity, from 0–255
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=642998
+ */
+typedef struct {
+    guint16 red;
+    guint16 green;
+    guint16 blue;
+} Bug642998;
+
+
+/**
+ * Bug644291:
+ * @BUG_644291_START: foo
+ * @BUG_644291_TEXT: bar
+ * @BUG_644291_END: milk
+ * @BUG_644291_ATTRIBUTE: comes
+ * @BUG_644291_XMLNS: from
+ * @BUG_644291_ASSIGN_TO: cows
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=644291
+ */
+typedef enum
+{
+  BUG_644291_START = '(',
+  BUG_644291_TEXT = '$',
+  BUG_644291_END = ')',
+  BUG_644291_ATTRIBUTE = '@',
+  BUG_644291_XMLNS = ':',
+  BUG_644291_ASSIGN_TO = '*'
+} Bug644291;
+
+/* varargs */
+
+extern void bug_000000_va1 (gchar name, ...);
+
+/**
+ * BUG_000000_VA2:
+ * @name: a name
+ * @...: A printf-style message to output
+ *
+ * Outputs a message.
+ */
+#define BUG_000000_VA2(name,...)
+
+/**
+ * BUG_000000_VA3:
+ * @name: a name
+ * @...: A printf-style message to output
+ *
+ * Outputs a message.
+ */
+#define BUG_000000_VA3(name,args...)
+
+/**
+ * Bug000000Scope:
+ *
+ * Opaque structure.
+ * "warning: Field descriptions for Bug000000Scope are missing in source code comment block."
+ * but not if we remove the blank line before "int b";
+ */
+typedef struct _Bug000000Scope Bug000000Scope;
+struct _Bug000000Scope {
+  /*< private >*/
+  union {
+    struct {
+      /* comment */
+      int a;
+    } ABI;
+    gpointer _reserved[4 - 1];
+  } abidata;
+
+  int b;
+};
+
+/**
+ * gst_play_marshal_BUFFER__BOXED:
+ * @closure: test
+ * @return_value: test
+ * @marshal_data: test
+ *
+ * test.
+ */
+void
+gst_play_marshal_BUFFER__BOXED (gint * closure,
+    gint * return_value G_GNUC_UNUSED,
+    gpointer marshal_data);
+
+
+/**
+ * BUG_656773a:
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=656773
+ */
+extern const char* const BUG_656773a;
+
+/**
+ * BUG_656773b:
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=656773
+ */
+extern const char* BUG_656773b;
+
+/**
+ * BUG_656773c:
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=656773
+ */
+const char* const BUG_656773c = "bug";
+
+/**
+ * BUG_656946:
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=656946
+ */
+extern short int BUG_656946;
+
+#endif // GTKDOC_TESTER_H

@@ -11,6 +11,7 @@
  * Try a <ulink url="http://www.gtk.org/gtk-doc/#Top">link containing a # char</ulink>.
  *
  * <refsect2 id="dummy-id">
+ * <title>more details</title>
  * <para>
  * Second paragraph inside subsection.
  * </para>
@@ -28,6 +29,8 @@
  * http://bugzilla.gnome.org/show_bug.cgi?id=141869
  */
 void bug_141869_a (unsigned pid) {
+  /* just silence a compiler warning */
+  bug_481811((double)pid);
 }
 
 /**
@@ -180,8 +183,15 @@ void bug_580300c_get_type() { }
  *
  * Returns: result
  */
-int bug_580300d_get_type() { }
+int bug_580300d_get_type() { return 0; }
 
+/**
+ * bug_597937:
+ * @function_arg: value
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=597937
+ */
+void bug_597937(void (*function_arg)(int arg1, char arg2, void *)) { }
 
 /**
  * bug_602518a:
@@ -235,8 +245,107 @@ long double bug_607445(long double **a, int n) {
  * http://bugzilla.gnome.org/show_bug.cgi?id=610257
  */
 signed long
-bug_610257 (const unsigned char *der, int *len)
+bug_610257(const unsigned char *der, int *len)
 {
   return 1L;
 }
 
+
+/**
+ * bug_623968a:
+ *
+ * <para>test</para>
+ * <refsect3>
+ *   <title>subsect</title>
+ *   <para>test</para>
+ * </refsect3>
+ **/
+void
+bug_623968a(void)
+{
+}
+
+/**
+ * bug_623968b:
+ *
+ * test
+ *
+ * <refsect3>
+ *   <title>subsect</title>
+ *   <para>test</para>
+ * </refsect3>
+ **/
+void
+bug_623968b(void)
+{
+}
+
+/**
+ * bug_623968c:
+ *
+ * <para>test</para>
+ **/
+void
+bug_623968c(void)
+{
+}
+
+
+/**
+ * bug_624200a:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624200
+ *
+ * Returns: result
+ */
+const char * const *
+bug_624200a(void)
+{
+  return NULL;
+}
+
+/**
+ * bug_624200b:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624200
+ *
+ * Returns: result
+ */
+const char ** const
+bug_624200b(void)
+{
+  return NULL;
+}
+
+/**
+ * bug_638330:
+ * @arg1: arg1
+ * @data: data
+ * @length: length
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=638330
+ */
+void (*bug_638330) (void *arg1,
+     const unsigned char *data,
+     unsigned int length) = NULL;
+
+
+/* internal function */
+gchar *
+_bug_000000a (const gchar *name)
+{
+  return NULL;
+}
+
+/* varargs */
+
+/**
+ * bug_000000_va1:
+ * @name: a name
+ * @...: A printf-style message to output
+ *
+ * Outputs a message.
+ */
+void bug_000000_va1 (gchar name, ...)
+{
+}

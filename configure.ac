@@ -1,35 +1,36 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.58)
+AC_PREREQ([2.63])
 
 dnl Use a simple 2-digit version number for a while, since our old example
 dnl Makefile can only cope with that, i.e. use 1.1, 1.2, 1.3 ... 9.9.
 dnl FIXME: I can't see anything failing (1.14.1), lets try to use a three digit
 dnl number for the development version
-m4_define(gtk_doc_version, 1.15)
+m4_define(gtk_doc_version, 1.18)
 
-AC_INIT([gtk-doc], [gtk_doc_version], [http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-doc])
+AC_INIT([gtk-doc],[gtk_doc_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-doc],[gtk-doc])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([gtkdoc-common.pl.in])
+AC_CONFIG_AUX_DIR([build-aux])
 
-AM_INIT_AUTOMAKE([check-news std-options])
-AM_MAINTAINER_MODE
+AM_INIT_AUTOMAKE([1.11 check-news std-options -Wno-portability tar-ustar no-dist-gzip dist-xz])
+AM_MAINTAINER_MODE([enable])
 
 # Support silent build rules, requires at least automake-1.11. Disable
 # by either passing --disable-silent-rules to configure or passing V=1
 # to make
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+AM_SILENT_RULES([yes])
 
 dnl Forcing a non-null ACTION-IF-NOT-FOUND disables scrollkeeper if
 dnl gnome-doc-utils is not found but does not invalidate the build.
 GNOME_DOC_INIT([],[],enable_scrollkeeper=no)
 
-dnl make sure $ACLOCAL_FLAGS are used during a rebuild.
-AC_SUBST([ACLOCAL_AMFLAGS], ["\${ACLOCAL_FLAGS}"])
-
-AC_ISC_POSIX
+# Check for programs
 AC_PROG_CC
-AC_PROG_LIBTOOL
+
+# Initialize libtool
+LT_PREREQ([2.2])
+LT_INIT
 
 dnl Make sure we have pkg-config >= 0.19, so installing in $(datadir) is OK.
 PKG_PROG_PKG_CONFIG([0.19])
@@ -100,26 +101,59 @@ JH_CHECK_XML_CATALOG([http://docbook.sourceforge.net/release/xsl/current/html/ch
 dnl
 dnl Check for syntax highlighters
 dnl
+AC_ARG_WITH([highlight],
+	AS_HELP_STRING([--with-highlight], [Select source code syntax highlighter (no|source-highlight|highlight|vim|auto)]),
+	, [with_highlight=auto])
+
+case $with_highlight in
+	no|source-highlight|highlight|vim|auto) ;;
+	*) AC_MSG_ERROR([Invalid value for syntax highlighting option.]) ;;
+esac
+
 HIGHLIGHT_OPTIONS=""
-AC_PATH_PROG([HIGHLIGHT], [source-highlight])
-if test -n "$HIGHLIGHT"; then
-	HIGHLIGHT_OPTIONS="-t4 -sc -cstyle.css --no-doc -i"
-else
-	AC_PATH_PROG([HIGHLIGHT], [highlight])
+if test "$with_highlight" = "auto"; then
+	AC_PATH_PROG([HIGHLIGHT], [source-highlight])
 	if test -n "$HIGHLIGHT"; then
-		HIGHLIGHT_OPTIONS="-X -f --class-name=gtkdoc "
+		HIGHLIGHT_OPTIONS="-t4 -sc -cstyle.css --no-doc -i"
 	else
-		AC_PATH_PROG([HIGHLIGHT], [vim])
+		AC_PATH_PROG([HIGHLIGHT], [highlight])
 		if test -n "$HIGHLIGHT"; then
-			dnl vim is useless if it does not support syntax highlighting
+			HIGHLIGHT_OPTIONS="--out-format=xhtml -f --class-name=gtkdoc "
+		else
+			AC_PATH_PROG([HIGHLIGHT], [vim])
+			if test -n "$HIGHLIGHT"; then
+				dnl vim is useless if it does not support syntax highlighting
+				AC_MSG_CHECKING([whether vim has +syntax feature])
+				if $HIGHLIGHT --version | grep '+syntax' >/dev/null; then
+					AC_MSG_RESULT([yes])
+				else
+					AC_MSG_RESULT([no])
+					HIGHLIGHT=
+				fi
+			fi
+		fi
+	fi
+else
+	if test "$with_highlight" != "no"; then
+		AC_PATH_PROG([HIGHLIGHT], [$with_highlight], [no])
+	fi
+
+	case $with_highlight in
+		source-highlight) HIGHLIGHT_OPTIONS="-t4 -sc -cstyle.css --no-doc -i";;
+		highlight) HIGHLIGHT_OPTIONS="--out-format=xhtml -f --class-name=gtkdoc ";;
+		vim)
 			AC_MSG_CHECKING([whether vim has +syntax feature])
 			if $HIGHLIGHT --version | grep '+syntax' >/dev/null; then
 				AC_MSG_RESULT([yes])
 			else
 				AC_MSG_RESULT([no])
-				HIGHLIGHT=
+				HIGHLIGHT=no
 			fi
-		fi
+		;;
+	esac
+
+	if test "$HIGHLIGHT" = "no" && test "$with_highlight" != "no"; then
+		AC_MSG_ERROR([Could not find requested syntax highlighter])
 	fi
 fi
 AC_SUBST([HIGHLIGHT_OPTIONS])
@@ -172,8 +206,8 @@ AC_ARG_ENABLE([debug],
 	[enable_debug="no"])
 AC_MSG_RESULT($enable_debug)
 
-if test "$enable_debug" = "yes"; then
-	TRACE="print __FILE__ . \":\" . __LINE__ . \":\" ."
+if test "x$enable_debug" != "xno"; then
+	TRACE="LogTrace"
 else
 	TRACE="#"
 fi
@@ -250,3 +284,7 @@ test -n "$HIGHLIGHT" \
 test "x$build_tests" != "xno" \
     && AC_MSG_NOTICE([** Building regression tests]) \
     || AC_MSG_NOTICE([   Skipping regression tests])
+test "x$enable_debug" != "xno" \
+    && AC_MSG_NOTICE([** Debug tracing enabled]) \
+    || AC_MSG_NOTICE([   Debug tracing disabled])
+

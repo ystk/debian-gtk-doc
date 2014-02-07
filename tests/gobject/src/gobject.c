@@ -10,17 +10,20 @@
  * signal.
  *
  * When subclassing it is useful to override the #GtkdocObjectClass.test()
- * method.
+ * method. The #GtkdocObjectClass.foo_bar() vmethod lets you refine your
+ * frobnicator.
  *
  * A new instance can be created using the gtkdoc_object_new() function. The
  * whole lifecycle usualy looks like shown in this example:
  * |[<!-- language="C" -->
  * GObject *myobj;
- * 
+ *
  * myobj = gtkdoc_object_new();
  * // do somehing
  * g_object_unref (myobj);
  * ]|
+ *
+ * # Examples #
  *
  * You can also change parameters:
  * <informalexample>
@@ -28,26 +31,43 @@
  * </informalexample>
  *
  * This example serves two main purposes:
- * <itemizedlist>
- * <listitem><para>
- * testing conversion
- * </para></listitem>
- * <listitem><para>
- * catching bugs
- * </para></listitem>
- * </itemizedlist>
+ * - testing conversion (long description
+ *   follows here)
+ * - catching bugs
+ * - having an example
+ *
+ * Nothing more to say.
+ */
+/**
+ * SECTION:object2
+ * @title: GtkdocObject2
+ * @short_description: class with interface for gtk-doc unit test
+ * @see_also: #GtkdocIface
+ *
+ * This file contains non-sense code for the sole purpose of testing the docs.
+ *
+ * Internals
+ * =========
+ *
+ * All the internal details go here or not:
+ * - single item list
  */
 
 #include <glib.h>
 #include <glib-object.h>
 
 #include "gobject.h"
+#include "giface.h"
 
 /* property ids */
 
 enum {
   GTKDOC_OBJECT_TEST=1,
   GTKDOC_OBJECT_DEP_TEST
+};
+
+enum {
+  GTKDOC_OBJECT2_ITEST=1
 };
 
 /* constructor methods */
@@ -82,7 +102,7 @@ GtkdocObject *gtkdoc_object_new (void) {
  * Since: 0.5
  */
 void gtkdoc_object_set_otest (GObject *self, const gchar *value) {
-  
+
 }
 
 /**
@@ -101,7 +121,7 @@ void gtkdoc_object_set_otest (GObject *self, const gchar *value) {
  * Since: 0.5
  */
 void gtkdoc_object_frobnicate (GObject *self, gint n) {
-  
+
 }
 
 /**
@@ -170,6 +190,36 @@ static void gtkdoc_object_class_init (GtkdocObjectClass *klass) {
                 0); // n_params
 
   /**
+   * GtkdocObject::strings-changed:
+   *
+   * Something has happened.
+   */
+  g_signal_new ("strings-changed", G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+                0,
+                NULL, // accumulator
+                NULL, // acc data
+                g_cclosure_marshal_VOID__BOXED,
+                G_TYPE_NONE, // return type
+                1, G_TYPE_STRV); // n_params
+
+#if GLIB_CHECK_VERSION (2, 25, 9)
+  /**
+   * GtkdocObject::variant-changed:
+   *
+   * Something has happened.
+   */
+  g_signal_new ("variant-changed", G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+                0,
+                NULL, // accumulator
+                NULL, // acc data
+                g_cclosure_marshal_VOID__VARIANT,
+                G_TYPE_NONE, // return type
+                1, G_TYPE_VARIANT); // n_params
+#endif
+
+  /**
    * GtkdocObject:otest:
    *
    * Since: 0.1
@@ -205,11 +255,47 @@ GType gtkdoc_object_get_type (void) {
       NULL, // class_finalize
       NULL, // class_data
       (guint16)sizeof(GtkdocObject),
-      0,   // n_preallocs
+      0,    // n_preallocs
       NULL, // instance_init
-      NULL // value_table
+      NULL  // value_table
     };
     type = g_type_register_static(G_TYPE_OBJECT,"GtkdocObject",&info,0);
+  }
+  return type;
+}
+
+
+static void gtkdoc_object2_class_init (GtkdocObjectClass *klass) {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->set_property = gtkdoc_object_set_property;
+  gobject_class->get_property = gtkdoc_object_get_property;
+
+  g_object_class_override_property (gobject_class, GTKDOC_OBJECT2_ITEST, "itest");
+}
+
+GType gtkdoc_object2_get_type (void) {
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      (guint16)sizeof(GtkdocObject2Class),
+      NULL, // base_init
+      NULL, // base_finalize
+      (GClassInitFunc)gtkdoc_object2_class_init, // class_init
+      NULL, // class_finalize
+      NULL, // class_data
+      (guint16)sizeof(GtkdocObject2),
+      0,    // n_preallocs
+      NULL, // instance_init
+      NULL  // value_table
+    };
+    static const GInterfaceInfo interface_info = {
+      NULL,  // interface_init
+      NULL,  // interface_finalize
+      NULL   // interface_data
+    };
+    type = g_type_register_static(G_TYPE_OBJECT,"GtkdocObject2",&info,0);
+    g_type_add_interface_static(type, GTKDOC_TYPE_IFACE, &interface_info);
   }
   return type;
 }
