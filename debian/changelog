@@ -1,3 +1,51 @@
+gtk-doc (1.18-2) unstable; urgency=low
+
+  * debian/watch: Look for xz compressed tarballs.
+  * debian/control.in: Mark as Multi-Arch: foreign to allow using this as
+    build dependency for cross-building. Thanks to "Wookey" for this.
+    (LP: #957137)
+  * debian/copyright: Update to official copyright 1.0 format.
+  * debian/control.in: Bump Standards-Vesion to 3.9.3.
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 19 Mar 2012 07:13:42 +0100
+
+gtk-doc (1.18-1) unstable; urgency=low
+
+  * debian/watch: Move to *.bz2, upstream does not release .gz tarballs any
+    more.
+  * New upstream release.
+  * Drop 01_highlight_options.patch, upstream now.
+  * debian/control.in: Drop leading "the" from short description, thanks
+    lintian.
+  * debian/copyright: Convert to DEP-5, and add actual copyrights.
+  * debian/control.in, debian/rules: Drop usage dh_pysupport, this package
+    does not ship any Python modules. Also, pysupport is obsolete.
+  * debian/compat: Switch debhelper compat level to 8, and bump debhelper
+    build dependency accordingly.
+  * debian/control.in: Bump Standards-Version to 3.9.2.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 15 Sep 2011 09:14:50 +0200
+
+gtk-doc (1.17-2) unstable; urgency=low
+
+  * 01_highlight_options.patch: stolen from upstream git. Pass the 
+    correct output options for highlight 3.4. Closes: #623490.
+  * Use dh-autoreconf.
+  * Depend on highlight 3.4.
+
+ -- Josselin Mouette <joss@debian.org>  Wed, 20 Apr 2011 20:05:54 +0200
+
+gtk-doc (1.17-1) unstable; urgency=low
+
+  * debian/control.in:
+    - Add Vcs-* fields. Closes: #608321.
+  * New upstream release.
+  * debian/source/format,
+    debian/rules:
+    - Switch to source format 3.0 (quilt).
+
+ -- Emilio Pozuelo Monfort <pochu@debian.org>  Mon, 28 Feb 2011 21:47:27 +0000
+
 gtk-doc (1.15-2) unstable; urgency=low
 
   * Drop emacs byte-compilation support since it would require a 

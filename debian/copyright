@@ -1,18 +1,24 @@
-This package was Debianised by Steve Haslam <araqnid@debian.org> on
-21st May 1999.
-Then it was maintained by Sebastian Rittau <srittau@debian.org> from 12 Jul
-2003 to 18 Feb 2005.
-Then it was maintained by Loic Minier <lool@dooz.org>.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: gtk-doc
+Source: http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/
 
-It was downloaded from <http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/>.
-
+Files: *
 Copyright:
-
-This package is copyrighted under the GPL.  Please see
-/usr/share/common-licenses/GPL on a Debian system for the full text.
-
-Authors (as listed in the upstream AUTHORS file):
-
-Damon Chaplin <damon@gnome.org>
-Owen Taylor <otaylor@redhat.com>
-
+ Copyright (C) 1998  Damon Chaplin
+ Copyright (C) 2007  David Necas (Yeti)
+ Copyright (C) 1998 Michael Zucchi
+ Copyright (C) 2007  David Nečas
+ Copyright (c) 1996 X Consortium
+License: GPL-2+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ . 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ Please see /usr/share/common-licenses/GPL-2 on a Debian system for the full
+ text.

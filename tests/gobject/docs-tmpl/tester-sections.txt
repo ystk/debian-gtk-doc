@@ -19,6 +19,15 @@ GTKDOC_OBJECT_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>object2</FILE>
+GtkdocObject2
+GtkdocObject2Class
+<SUBSECTION Standard>
+GTKDOC_TYPE_OBJECT2
+gtkdoc_object2_get_type
+</SECTION>
+
+<SECTION>
 <FILE>iface</FILE>
 GtkdocIface
 GtkdocIfaceInterface
@@ -34,12 +43,24 @@ GTKDOC_IFACE_GET_INTERFACE
 </SECTION>
 
 <SECTION>
+<FILE>iface2</FILE>
+GtkdocIface2
+<SUBSECTION Standard>
+GTKDOC_TYPE_IFACE2
+gtkdoc_iface2_get_type
+</SECTION>
+
+<SECTION>
 <FILE>types</FILE>
 GtkdocEnum
+GtkdocPlainOldData
+GtkdocBoxedPlainOldData
 <SUBSECTION Standard>
 GTKDOC_TYPE_ENUM
 GTKDOC_TYPE_BOXED
 gtkdoc_enum_get_type
 gtkdoc_boxed_get_type
+GTKDOC_TYPE_BOXED_PLAIN_OLD_DATA
+gtkdoc_boxed_plain_old_data_get_type
 </SECTION>
 

@@ -13,10 +13,15 @@
 #define GTKDOC_IS_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTKDOC_TYPE_OBJECT))
 #define GTKDOC_OBJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTKDOC_TYPE_OBJECT, GtkdocObjectClass))
 
+#define GTKDOC_TYPE_OBJECT2           (gtkdoc_object2_get_type ())
+
 /* type structs */
 
 typedef struct _GtkdocObject GtkdocObject;
 typedef struct _GtkdocObjectClass GtkdocObjectClass;
+
+typedef struct _GtkdocObject2 GtkdocObject2;
+typedef struct _GtkdocObject2Class GtkdocObject2Class;
 
 /* in gtkdoc-scan::ScanHeader() we currently skip the enums, but output a decl
 * to -decl.txt and -decl-list.txt for the struct
@@ -43,6 +48,8 @@ struct _GtkdocObject {
  * GtkdocObjectClass:
  * @parent: this is a bug :/
  * @test: overideable method
+ * @ping: can be used before calling the @test() function
+ * @foo_bar: lets you refine your frobnicator
  *
  * class data of gtk-doc unit test class
  */
@@ -51,7 +58,29 @@ struct _GtkdocObjectClass {
 
   /* class methods */
   void (*test)(const GtkdocObject * const self, gconstpointer const user_data);
+  gboolean (*ping)(const GtkdocObject * const self);
+  gboolean (*foo_bar)(const GtkdocObject * const self);
 };
+
+/**
+ * GtkdocObject2:
+ *
+ * instance data of gtk-doc unit test class
+ */
+struct _GtkdocObject2 {
+  GObject parent;
+};
+
+/**
+ * GtkdocObject2Class:
+ * @parent: this is a bug :/
+ *
+ * class data of gtk-doc unit test class
+ */
+struct _GtkdocObject2Class {
+  GObjectClass parent;
+};
+
 
 struct GtkdocHelperStruct {
   int a;
@@ -63,6 +92,7 @@ enum GtkdocHelperEnum {
 };
 
 GType  gtkdoc_object_get_type(void) G_GNUC_CONST;
+GType  gtkdoc_object2_get_type(void) G_GNUC_CONST;
 
 GtkdocObject *gtkdoc_object_new(void);
 #ifndef GTKDOC_TESTER_DISABLE_DEPRECATED

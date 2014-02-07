@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-ACLOCAL_AMFLAGS=-I m4
+ACLOCAL_AMFLAGS=-I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = help tests
 
@@ -29,12 +29,13 @@ gtkdocdata_DATA = \
 	gtk-doc.dcl		\
 	gtk-doc.xsl		\
 	version-greater-or-equal.xsl \
-	devhelp.xsl		\
 	devhelp2.xsl		\
 	gtk-doc.make		\
-	gtk-doc.notmpl.make		\
-	home.png		\
-	left.png		\
+	gtk-doc.notmpl.make	\
+	gtk-doc.flat.make	\
+	gtk-doc.notmpl-flat.make	\
+	home.png			\
+	left.png			\
 	right.png		\
 	up.png			\
 	style.css
@@ -48,12 +49,20 @@ aclocal_DATA = gtk-doc.m4
 sgmldir = $(datadir)/sgml/gtk-doc
 sgml_DATA = gtk-doc.cat
 
+gtk-doc.flat.make: gtk-doc.make
+	@$(SED) -e "s/EXTRA_DIST =/EXTRA_DIST +=/" $< >$@
+
+gtk-doc.notmpl-flat.make: gtk-doc.notmpl.make
+	@$(SED) -e "s/EXTRA_DIST =/EXTRA_DIST +=/" $< >$@
+
 EXTRA_DIST = \
 	MAINTAINERS     \
 	gtk-doc.pc.in   \
 	gtk-doc.m4      \
 	gtk-doc.make    \
-	gtk-doc.notmpl.make    \
+	gtk-doc.notmpl.make \
+	gtk-doc.flat.make \
+	gtk-doc.notmpl-flat.make \
 	gtk-doc.doap \
 	gtk-doc.spec.in \
 	gtk-doc.spec    \
@@ -61,7 +70,6 @@ EXTRA_DIST = \
 	gtk-doc.xsl     \
 	gtk-doc-fo.xsl     \
 	version-greater-or-equal.xsl \
-	devhelp.xsl     \
 	devhelp2.xsl     \
 	gtk-doc.cat.in  \
 	home.png  \
