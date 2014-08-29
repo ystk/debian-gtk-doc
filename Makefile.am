@@ -14,7 +14,6 @@ bin_SCRIPTS = \
 	gtkdoc-rebase   \
 	gtkdoc-scan     \
 	gtkdoc-scangobj \
-	gtkdoc-scanobj  \
 	gtkdocize
 
 if HAVE_PYTHON
@@ -34,11 +33,14 @@ gtkdocdata_DATA = \
 	gtk-doc.notmpl.make	\
 	gtk-doc.flat.make	\
 	gtk-doc.notmpl-flat.make	\
-	home.png			\
-	left.png			\
-	right.png		\
-	up.png			\
-	style.css
+	style/home.png			\
+	style/left.png			\
+	style/left-insensitive.png		\
+	style/right.png		\
+	style/right-insensitive.png		\
+	style/up.png			\
+	style/up-insensitive.png		\
+	style/style.css
 
 pkgconfigdir = $(datadir)/pkgconfig
 pkgconfig_DATA = gtk-doc.pc
@@ -57,25 +59,14 @@ gtk-doc.notmpl-flat.make: gtk-doc.notmpl.make
 
 EXTRA_DIST = \
 	MAINTAINERS     \
+	$(gtkdocdata_DATA) \
 	gtk-doc.pc.in   \
 	gtk-doc.m4      \
-	gtk-doc.make    \
-	gtk-doc.notmpl.make \
-	gtk-doc.flat.make \
-	gtk-doc.notmpl-flat.make \
 	gtk-doc.doap \
 	gtk-doc.spec.in \
 	gtk-doc.spec    \
-	gtk-doc.dcl     \
-	gtk-doc.xsl     \
 	gtk-doc-fo.xsl     \
-	version-greater-or-equal.xsl \
-	devhelp2.xsl     \
 	gtk-doc.cat.in  \
-	home.png  \
-	left.png  \
-	right.png \
-	up.png    \
 	doc/README            \
 	doc/authors.txt       \
 	doc/gnome.txt         \
@@ -89,11 +80,14 @@ EXTRA_DIST = \
 	examples/Makefile.am  \
 	tools/docpercentages.pl \
 	tools/gtk-doc.el \
-	style.css \
-	COPYING-DOCS \
-	gnome-doc-utils.make
+	COPYING-DOCS
+
+CLEANFILES = \
+  gtk-doc.flat.make \
+  gtk-doc.notmpl-flat.make
 
 MAINTAINERCLEANFILES = \
+  build-aux \
 	$(srcdir)/INSTALL \
 	$(srcdir)/COPYING \
 	$(srcdir)/aclocal.m4 \
@@ -114,10 +108,9 @@ MAINTAINERCLEANFILES = \
 
 GITIGNOREFILES = \
 	RELNOTES.txt \
-	ChangeLog-?.??
+	ChangeLog-?.?? \
+	gtk-doc-*.tar.xz
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
-DISTCLEANFILES = gnome-doc-utils.make
 -include $(top_srcdir)/git.mk
 
 dist-hook:

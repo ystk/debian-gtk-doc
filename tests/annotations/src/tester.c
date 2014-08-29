@@ -1,6 +1,7 @@
 /**
  * SECTION:tester
  * @short_description: module for gtk-doc unit test
+ * @stability: stable
  *
  * This file contains non-sense code for the sole purpose of testing the docs.
  */
@@ -27,7 +28,7 @@ annotation_array_length (GObject *list,
 
 
 /**
- * annotation_nullable:
+ * annotation_allow_none:
  * @uri: a uri
  * @label: (allow-none): an optional string, which is used in ways too
  *  complicated to describe in a single line, making it necessary to wrap it
@@ -38,10 +39,28 @@ annotation_array_length (GObject *list,
  *  free after use, whose description is also rather long
  */
 gchar *
+annotation_allow_none (const gchar *uri,
+                       const gchar *label)
+{
+  return NULL;
+}
+
+/**
+ * annotation_nullable:
+ * @uri: a uri
+ * @label: (nullable): an optional string, which is used in ways too
+ *  complicated to describe in a single line, making it necessary to wrap it
+ *
+ * Document optional parameters.
+ *
+ * Returns: (transfer full) (nullable): Returns stuff which you have to
+ *  free after use, whose description is also rather long
+ */
+gchar *
 annotation_nullable (const gchar *uri,
                      const gchar *label)
 {
-   return NULL;
+  return NULL;
 }
 
 /**
@@ -55,7 +74,7 @@ annotation_nullable (const gchar *uri,
 gboolean
 annotation_elementtype (const GList *list)
 {
-   return TRUE;
+  return TRUE;
 }
 
 /**
@@ -69,7 +88,7 @@ annotation_elementtype (const GList *list)
 gboolean
 annotation_elementtype_transfer (const GList *list)
 {
-   return TRUE;
+  return TRUE;
 }
 
 /**
@@ -82,7 +101,7 @@ annotation_elementtype_transfer (const GList *list)
 GList *
 annotation_elementtype_returns (void)
 {
-   return NULL;
+  return NULL;
 }
 
 /**
@@ -96,7 +115,51 @@ annotation_elementtype_returns (void)
 gboolean
 annotation_outparams (GList **list)
 {
-   return TRUE;
+  return TRUE;
+}
+
+/**
+ * annotation_outparams_optional:
+ * @list: (out) (transfer none) (optional): a pointer to take a list, or %NULL
+ *
+ * Document optional parameters.
+ *
+ * Returns: %TRUE for success
+ */
+gboolean
+annotation_outparams_optional (GList **list)
+{
+  return TRUE;
+}
+
+/**
+ * annotation_outparams_nullable:
+ * @list: (out) (transfer none) (nullable): a pointer to take a list; but %NULL
+ * may also be returned
+ *
+ * Document optional parameters.
+ *
+ * Returns: %TRUE for success
+ */
+gboolean
+annotation_outparams_nullable (GList **list)
+{
+  return TRUE;
+}
+
+/**
+ * annotation_outparams_optional_nullable:
+ * @list: (out) (transfer none) (optional) (nullable): a pointer to take a
+ * list, or %NULL; but %NULL may also be returned in @list — isn’t that cool?
+ *
+ * Document optional parameters.
+ *
+ * Returns: %TRUE for success
+ */
+gboolean
+annotation_outparams_optional_nullable (GList **list)
+{
+  return TRUE;
 }
 
 /**
@@ -111,6 +174,20 @@ annotation_skip (GList *list)
 }
 
 /**
+ * annotation_skip_return: (skip)
+ * @list: a pointer to take a list
+ *
+ * Documentation for this function.
+ *
+ * Returns: (skip): %TRUE for success
+ */
+gboolean
+annotation_skip_return (GList *list)
+{
+  return TRUE;
+}
+
+/**
  * annotation_scope:
  * @callback: (scope async): a callback
  * @user_data: data to pass to callback
@@ -121,3 +198,26 @@ void
 annotation_scope (GCallback *callback, gpointer user_data)
 {
 }
+
+/**
+ * annotation_rename_to: (rename-to annotation_scope)
+ *
+ * Documentation for this function.
+ */
+void
+annotation_rename_to (void)
+{
+}
+
+/**
+ * stability_unstable:
+ *
+ * An experimental function.
+ *
+ * Stability: unstable
+ */
+void
+stability_unstable(void)
+{
+}
+

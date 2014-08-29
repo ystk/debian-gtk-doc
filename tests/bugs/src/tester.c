@@ -77,7 +77,7 @@ int bug_380824 (int arg) {
  *
  * Returns: result
  */
-struct bug *
+struct bug_411739_rettype *
 bug_411739 (void) {
   return NULL;
 }
@@ -349,3 +349,80 @@ _bug_000000a (const gchar *name)
 void bug_000000_va1 (gchar name, ...)
 {
 }
+
+
+/**
+ * bug_624001a:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624001
+ *
+ * Deprecated: Use main() instead.
+ */
+void bug_624001a(void)
+{
+}
+
+/**
+ * bug_624001b:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624001
+ *
+ * Deprecated: Use main() instead.
+ */
+void bug_624001b(void)
+{
+}
+
+/**
+ * bug_624001c:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624001
+ *
+ * Deprecated: Use main() instead.
+ */
+void bug_624001c(void)
+{
+}
+
+/**
+ * bug_624001d:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624001
+ *
+ * Deprecated: Use main() instead.
+ */
+void bug_624001d(void)
+{
+}
+
+/**
+ * bug_624001e:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=624001
+ *
+ * Deprecated: Use main() instead.
+ */
+void bug_624001e(void)
+{
+}
+
+/**
+ * bug_711598:
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=711598
+ */
+void bug_711598(void)
+{
+}
+
+/**
+ * deprecation_notice:
+ *
+ * Foo.
+ *
+ * Deprecated: 3.10: Use named icon "bar" instead.
+ */
+void deprecation_notice(void)
+{
+}
+

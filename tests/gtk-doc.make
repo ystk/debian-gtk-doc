@@ -53,17 +53,17 @@ REPORT_FILES = \
 CLEANFILES = $(SCANOBJ_FILES) $(REPORT_FILES) $(DOC_STAMPS)
 
 check-local: html-build.stamp pdf-build.stamp
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: All done"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: All done"
 
 docs: html-build.stamp pdf-build.stamp
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: All done"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: All done"
 
 $(REPORT_FILES): sgml-build.stamp
 
 ts:
-	@echo >ts `date +%s.%N`;
+	@echo >ts `date $(TS_FMT)`;
 
 #### setup ####
 
@@ -74,20 +74,20 @@ setup-build.stamp: ts
 	    if test "x$$files" != "x" ; then \
 	        for file in $$files ; do \
 	            test -f $(abs_srcdir)/$$file && \
-	                cp -pu $(abs_srcdir)/$$file $(abs_builddir)/ || true; \
+	                cp -pf $(abs_srcdir)/$$file $(abs_builddir)/ || true; \
 	        done; \
 	    fi; \
 	    test -d $(abs_srcdir)/tmpl && \
-	       { cp $(abs_builddir)/$$file $(abs_builddir)/html; \
+	       { cp -pR $(abs_srcdir)/tmpl $(abs_builddir)/; \
 	       chmod -R u+w $(abs_builddir)/tmpl; } \
 	fi
 	@touch setup-build.stamp
 
 #### scan ####
 
-scan-build.stamp: ts $(HFILE_GLOB) $(CFILE_GLOB)
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Scanning header files"
+scan-build.stamp: ts setup-build.stamp $(HFILE_GLOB) $(CFILE_GLOB)
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Scanning header files"
 	@_source_dir='' ; \
 	for i in $(DOC_SOURCE_DIR) ; do \
 	    _source_dir="$${_source_dir} --source-dir=$$i" ; \
@@ -96,8 +96,8 @@ scan-build.stamp: ts $(HFILE_GLOB) $(CFILE_GLOB)
 	PATH=$(abs_top_builddir):$(PATH) PERL5LIB=$(abs_top_builddir):$(PERL5LIB) \
 	gtkdoc-scan --module=$(DOC_MODULE) --ignore-headers="$(IGNORE_HFILES)" $${_source_dir} $(SCAN_OPTIONS) $(EXTRA_HFILES) 2>&1 | tee -a gtkdoc-scan.log
 	@if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null 2>&1 ; then \
-		ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	    echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Introspecting gobjects"; \
+		ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	    echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Introspecting gobjects"; \
 	    scanobj_options=""; \
 	    if test "x$(V)" = "x1"; then \
 	        scanobj_options="--verbose"; \
@@ -119,14 +119,14 @@ $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)
 #### templates ####
 
 tmpl-build.stamp: setup-build.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Rebuilding template files"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Rebuilding template files"
 	@echo "gtkdoc-mktmpl --module=$(DOC_MODULE) $(MKTMPL_OPTIONS)" >gtkdoc-mktmpl.log; \
 	PATH=$(abs_top_builddir):$(PATH) PERL5LIB=$(abs_top_builddir):$(PERL5LIB) \
 	gtkdoc-mktmpl --module=$(DOC_MODULE) $(MKTMPL_OPTIONS) 2>&1 | tee -a gtkdoc-mktmpl.log
 	@if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
 	  if test -w $(abs_srcdir) ; then \
-	    cp -rp $(abs_builddir)/tmpl $(abs_srcdir)/; \
+	    cp -pR $(abs_builddir)/tmpl $(abs_srcdir)/; \
 	  fi \
 	fi
 	@touch tmpl-build.stamp
@@ -140,8 +140,8 @@ $(srcdir)/tmpl/*.sgml:
 #### xml ####
 
 sgml-build.stamp: tmpl.stamp $(DOC_MODULE)-sections.txt $(srcdir)/tmpl/*.sgml $(expand_content_files)
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Building XML"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Building XML"
 	@_source_dir='' ; \
 	for i in $(DOC_SOURCE_DIR) ; do \
 	    _source_dir="$${_source_dir} --source-dir=$$i" ; \
@@ -157,8 +157,8 @@ sgml.stamp: sgml-build.stamp
 #### html ####
 
 html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @00$$tsd +%H:%M:%S.%N`: Building HTML"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Building HTML"
 	@rm -rf html
 	@mkdir html
 	@mkhtml_options=""; \
@@ -177,8 +177,8 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	    cp $(abs_builddir)/$$file $(abs_builddir)/html; \
 	  fi; \
 	done;
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Fixing cross-references"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Fixing cross-references"
 	@echo "gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)" >gtkdoc-fixxref.log; \
 	PATH=$(abs_top_builddir):$(PATH) PERL5LIB=$(abs_top_builddir):$(PERL5LIB) \
 	gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS) 2>&1 | tee -a gtkdoc-fixxref.log
@@ -187,8 +187,8 @@ html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 #### pdf ####
 
 pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-	@ts1=`cat ts`;ts2=`date +%s.%N`;tsd=`echo $$ts2-$$ts1 | bc`; \
-	echo "  DOC   `date --utc --date @0$$tsd +%H:%M:%S.%N`: Building PDF"
+	@ts1=`cat ts`;ts2=`date $(TS_FMT)`;tsd=`echo $$ts2-$$ts1 | bc`; \
+	echo "  DOC   `$(DATE_FMT_CMD)$$tsd`: Building PDF"
 	@rm -f $(DOC_MODULE).pdf
 	@mkpdf_options=""; \
 	if test "x$(V)" = "x1"; then \
@@ -212,8 +212,11 @@ pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 
 # we need to enforce a rebuild for the tests
 clean-local:
-	@rm -f *~ *.bak ts
+	@rm -f *~ *.bak ts gtkdoc-*.log
 	@rm -rf .libs
+	@if echo $(SCAN_OPTIONS) | grep -q "\-\-rebuild-types" ; then \
+	  rm -f $(DOC_MODULE).types; \
+	fi
 	$(MAKE) distclean-local
 
 distclean-local:
@@ -224,7 +227,7 @@ distclean-local:
 	    rm -rf tmpl; \
 	fi
 
-maintainer-clean-local: clean
+maintainer-clean-local:
 	@rm -rf xml html
 
 .PHONY : dist-hook-local docs
