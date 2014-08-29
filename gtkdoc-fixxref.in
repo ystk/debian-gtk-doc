@@ -74,8 +74,6 @@ EOF
 
 # This contains all the entities and their relative URLs.
 my %Links;
-# This hold the path entries we already scanned
-my @VisitedPaths;
 
 # failing link targets we don't warn about even once
 my %NoLinks = (
@@ -98,7 +96,7 @@ my %NoLinks = (
 my $path_prefix="";
 if ($HTML_DIR =~ m%(.*?)/share/gtk-doc/html%) {
     $path_prefix=$1;
-    #print "Path prefix: $path_prefix\n";
+    @TRACE@("Path prefix: $path_prefix");
 }
 
 if (!defined $MODULE_DIR) {
@@ -113,53 +111,47 @@ $dir = `pkg-config --variable=prefix glib-2.0`;
 $dir =~ s/\s+$//;
 $dir = $dir . "/share/gtk-doc/html";
 if (-d $dir && $dir ne $HTML_DIR) {
-    #print "Scanning GLib directory: $dir\n";
+    @TRACE@("Scanning GLib directory: $dir");
+
+    # Some predefined link targets to get links into type hierarchies as these
+    # have no targets. These are always absolute for now.
+    $Links{'GBoxed'} = "$dir/gobject/gobject-Boxed-Types.html";
+    $Links{'GEnum'} = "$dir/gobject/gobject-Enumeration-and-Flag-Types.html";
+    $Links{'GFlags'} = "$dir/gobject/gobject-Enumeration-and-Flag-Types.html";
+    $Links{'GInterface'} = "$dir/gobject/GTypeModule.html";
+
     if ($dir !~ m%^\Q$path_prefix\E/%) {
         &ScanIndices ($dir, 1);
     } else {
         &ScanIndices ($dir, 0);
     }
-    push (@VisitedPaths, $dir);
 }
 
 if (defined ($ENV{"GNOME2_PATH"})) {
     foreach $dir (split (/:/, $ENV{"GNOME2_PATH"})) {
         $dir = $dir . "/share/gtk-doc/html";
         if (-d $dir && $dir ne $HTML_DIR) {
-            #print "Scanning GNOME2_PATH directory: $dir\n";
+            @TRACE@("Scanning GNOME2_PATH directory: $dir");
             if ($dir !~ m%^\Q$path_prefix\E/%) {
                 &ScanIndices ($dir, 1);
             } else {
                 &ScanIndices ($dir, 0);
             }
-            push (@VisitedPaths, $dir);
         }
         # ubuntu started to compress this as index.sgml.gz :/
         # https://bugs.launchpad.net/ubuntu/+source/gtk-doc/+bug/77138
     }
 }
 
-#print "Scanning HTML_DIR directory: $HTML_DIR\n";
+@TRACE@("Scanning HTML_DIR directory: $HTML_DIR");
 &ScanIndices ($HTML_DIR, 0);
-push (@VisitedPaths, $HTML_DIR);
-#print "Scanning HTML_DIR directory: $MODULE_DIR\n";
+@TRACE@("Scanning HTML_DIR directory: $MODULE_DIR");
 &ScanIndices ($MODULE_DIR, 0);
-push (@VisitedPaths, $MODULE_DIR);
 
 # check all extra dirs, but skip already scanned dirs or subdirs of those
 foreach my $dir (@EXTRA_DIRS) {
     my $vdir;
-    my $skip = 0;
-
-    foreach $vdir (@VisitedPaths) {
-        if ($dir eq $vdir || $dir =~ m%^\Q$vdir\E/%) {
-            #print "Skipping EXTRA_DIR directory: $dir\n";
-            $skip=1;
-        }
-    }
-    next if $skip;
-    #print "Scanning EXTRA_DIR directory: $dir\n";
-    push (@VisitedPaths, $dir);
+    @TRACE@("Scanning EXTRA_DIR directory: $dir");
 
     # If the --extra-dir option is not relative and is not sharing the same
     # prefix as the target directory of the docs, we need to use absolute
@@ -208,8 +200,8 @@ if (defined($MODULE)) {
 
 sub ScanIndices {
     my ($scan_dir, $use_absolute_links) = @_;
-
-    #print "Scanning source directory: $scan_dir absolute: $use_absolute_links\n";
+    
+    @TRACE@("Scanning source directory: $scan_dir absolute: $use_absolute_links");
 
     # This array holds any subdirectories found.
     my (@subdirs) = ();
@@ -231,14 +223,13 @@ sub ScanIndices {
 
     # Now recursively scan the subdirectories.
     my $dir;
-    foreach $dir (@subdirs) {
+    foreach $dir (sort(@subdirs)) {
         &ScanIndices ("$scan_dir/$dir", $use_absolute_links);
     }
 }
 
 sub ScanIndex {
     my ($file, $use_absolute_links) = @_;
-    #print "Scanning index file: $file absolute: $use_absolute_links\n";
 
     # Determine the absolute directory, to be added to links in index.sgml
     # if we need to use an absolute link.
@@ -247,15 +238,20 @@ sub ScanIndex {
     # the rest.
     my $dir = "../";
     if ($use_absolute_links) {
-        $file =~ /(.*\/)(.*?)\/index\.sgml/;
-        $dir = $1;
+        # For uninstalled index.sgml files we'd need to map the path to where it
+        # will be installed to
+        if ($file !~ /\.\//) {
+          $file =~ /(.*\/)(.*?)\/index\.sgml/;
+          $dir = $1;
+        }
     }
+    @TRACE@("Scanning index file=$file, absolute=$use_absolute_links, dir=$dir");
 
     open (INDEXFILE, $file)
         || die "Can't open $file: $!";
     while (<INDEXFILE>) {
         if (m/^<ANCHOR\s+id\s*=\s*"([^"]*)"\s+href\s*=\s*"([^"]*)"\s*>/) {
-            #print "Found id: $1 href: $2\n";
+            @TRACE@("Found id: $1 href: $2");
             $Links{$1} = "$dir$2";
         }
     }
@@ -282,7 +278,7 @@ sub FixCrossReferences {
 
 sub FixHTMLFile {
     my ($file) = @_;
-    #print "Fixing file: $file\n";
+    @TRACE@("Fixing file: $file");
 
     open (HTMLFILE, $file)
         || die "Can't open $file: $!";
@@ -354,12 +350,14 @@ sub MakeXRef {
         # uninstalled
         if (defined($MODULE) && $href =~ m%^\.\./$MODULE/(.*)$%) {
             $href=$1;
+            @TRACE@("  Fixing link to uninstalled doc: $id, $href, $text");
+        } else {
+            @TRACE@("  Fixing link: $id, $href, $text");
         }
-        #print "  Fixing link: $id, $href, $text\n";
         return "<a href=\"$href\">$text</a>";
     } else {
         my $warn = 1;
-        #print "  no link for: $id, $text\n";
+        @TRACE@("  no link for: $id, $text");
 
         # don't warn multiple times and also skip blacklisted (ctypes)
         $warn = 0 if exists $NoLinks{$id};
@@ -420,7 +418,7 @@ sub HighlightSource {
     print NEWFILE $source;
     close (NEWFILE);
 
-    #print" running @HIGHLIGHT@ @HIGHLIGHT_OPTIONS@$temp_source_file \n";
+    @TRACE@(" running @HIGHLIGHT@ @HIGHLIGHT_OPTIONS@$temp_source_file ");
 
     # format source
     my $highlighted_source=`@HIGHLIGHT@ @HIGHLIGHT_OPTIONS@$temp_source_file`;
@@ -466,7 +464,7 @@ sub HighlightSourceVim {
     close (NEWFILE);
 
     # format source
-    system "echo 'let html_number_lines=0|let html_use_css=1|let use_xhtml=1|syn on|e $temp_source_file|run! syntax/2html.vim|w! $temp_source_file.html|qa!' | @HIGHLIGHT@ -n -e -u NONE -T xterm >/dev/null";
+    system "echo 'let html_number_lines=0|let html_use_css=1|let html_use_xhtml=1|syn on|e $temp_source_file|run! syntax/2html.vim|w! $temp_source_file.html|qa!' | @HIGHLIGHT@ -n -e -u NONE -T xterm >/dev/null";
 
     my $highlighted_source;
     {
@@ -475,7 +473,7 @@ sub HighlightSourceVim {
         $highlighted_source = <NEWFILE>;
         close (NEWFILE);
     }
-    $highlighted_source =~ s#.*<pre>\n##s;
+    $highlighted_source =~ s#.*<pre\b[^>]*>\n##s;
     $highlighted_source =~ s#</pre>.*##s;
 
     # need to rewrite the stylesheet classes

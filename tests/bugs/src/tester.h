@@ -81,10 +81,6 @@ struct _bug_460127 {
 GLIB_VAR guint64 (*bug_477532) (void);
 
 
-struct bug {
-  int test;
-};
-
 
 void bug_141869_a (unsigned pid);
 void bug_141869_b (signed pid);
@@ -94,7 +90,18 @@ void bug_379466 (int
 
 int bug_380824 (int arg);
 
-struct bug *
+
+/**
+ * bug_411739_rettype:
+ * @test: field
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=411739
+ */
+struct bug_411739_rettype {
+  int test;
+};
+
+struct bug_411739_rettype *
 bug_411739 (void);
 
 void bug_419997 (int const_values);
@@ -459,5 +466,58 @@ const char* const BUG_656773c = "bug";
  * https://bugzilla.gnome.org/show_bug.cgi?id=656946
  */
 extern short int BUG_656946;
+
+#ifndef G_GNUC_DEPRECATED
+#define G_GNUC_DEPRECATED
+#endif
+#ifndef G_GNUC_DEPRECATED_FOR
+#define G_GNUC_DEPRECATED_FOR(a)
+#endif
+
+void bug_624001a(void) G_GNUC_DEPRECATED;
+void bug_624001b(void) G_GNUC_DEPRECATED_FOR(bug_624001a);
+
+G_GNUC_DEPRECATED
+void bug_624001c(void);
+
+G_GNUC_DEPRECATED_FOR(bug_624001c)
+void bug_624001d(void);
+
+#ifndef GLIB_DEPRECATED
+#define GLIB_DEPRECATED
+#endif
+
+GLIB_DEPRECATED
+void bug_624001e (void);
+
+#define BUG_711598_DEPRECATED_FOR(f) G_GNUC_DEPRECATED_FOR(f)
+BUG_711598_DEPRECATED_FOR(bug_711598b)
+void bug_711598(void);
+
+#ifdef GTKDOC_DISABLE_DEPRECATED
+void deprecation_notice(void);
+#endif
+
+/**
+ * BUG_731417_DEPRECATED:
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=731417
+ */
+#define BUG_731417_DEPRECATED   1
+
+/**
+ * Bug730658:
+ * @BUG_730658_CAN_READ: Can read
+ * @BUG_730658_CAN_WRITE: Can write
+ * @BUG_730658_IS_DEPRECATED: Is deprecated
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=730658
+ */
+typedef enum
+{
+  BUG_730658_CAN_READ = 1 << 0,
+  BUG_730658_CAN_WRITE = 1 << 1,
+  BUG_730658_IS_DEPRECATED = 1 << 2
+} Bug730658;
 
 #endif // GTKDOC_TESTER_H

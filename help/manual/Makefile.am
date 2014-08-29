@@ -1,16 +1,15 @@
-if HAVE_GNOME_DOC_UTILS
-include $(top_srcdir)/build-aux/gnome-doc-utils.make
-dist-hook: doc-dist-hook
-else
-dist-hook:
-	@echo "*** gnome-doc-utils must be installed and enabled in order to make dist"
-	@false
+if HAVE_YELP_TOOLS
+@YELP_HELP_RULES@
 endif
 
-DOC_MODULE = gtk-doc-manual
-DOC_ENTITIES = fdl-appendix.xml
-DOC_INCLUDES =
-DOC_FIGURES =
-DOC_LINGUAS = bn_IN de el en_GB es fr gu sl sv ta te
+HELP_ID = gtk-doc-manual
+
+HELP_FILES = \
+    index.docbook \
+    fdl-appendix.xml
+
+HELP_LINGUAS = bn_IN de el en_GB es fr gu pt_BR sl sv ta te zh_CN
+
+CLEANFILES = $(_HELP_LC_FILES) $(_HELP_LC_STAMPS) $(_HELP_MOFILES)
 
 -include $(top_srcdir)/git.mk

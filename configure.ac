@@ -5,7 +5,7 @@ dnl Use a simple 2-digit version number for a while, since our old example
 dnl Makefile can only cope with that, i.e. use 1.1, 1.2, 1.3 ... 9.9.
 dnl FIXME: I can't see anything failing (1.14.1), lets try to use a three digit
 dnl number for the development version
-m4_define(gtk_doc_version, 1.18)
+m4_define(gtk_doc_version, 1.21)
 
 AC_INIT([gtk-doc],[gtk_doc_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-doc],[gtk-doc])
 
@@ -20,10 +20,6 @@ AM_MAINTAINER_MODE([enable])
 # by either passing --disable-silent-rules to configure or passing V=1
 # to make
 AM_SILENT_RULES([yes])
-
-dnl Forcing a non-null ACTION-IF-NOT-FOUND disables scrollkeeper if
-dnl gnome-doc-utils is not found but does not invalidate the build.
-GNOME_DOC_INIT([],[],enable_scrollkeeper=no)
 
 # Check for programs
 AC_PROG_CC
@@ -213,6 +209,49 @@ else
 fi
 AC_SUBST(TRACE)
 
+dnl check what date format we can use for the makefile tracing in tests
+dnl this is mostly to detect the date command on macosx that is quite cripled
+dnl  and broken too
+AC_MSG_CHECKING(whether date can output nanoseconds)
+date +%s.%N | grep -q 'N'
+if test "$?" = "1"; then
+  TS_FMT="+%s.%N"
+  ELAPSED_FMT="+%H:%M:%S.%N"
+  AC_MSG_RESULT(yes)
+else
+  TS_FMT="+%s.0"
+  ELAPSED_FMT="+%H:%M:%S"
+  AC_MSG_RESULT(no)
+fi
+AC_SUBST(TS_FMT)
+AC_SUBST(ELAPSED_FMT)
+
+AC_MSG_CHECKING(whether date can format dates)
+date >/dev/null 2>&1 --utc --date @1.1 $ELAPSED_FMT
+if test "$?" = "0"; then
+  DATE_FMT_CMD="date --utc $ELAPSED_FMT --date @0"
+  AC_MSG_RESULT(yes)
+else
+  DATE_FMT_CMD="echo "
+  AC_MSG_RESULT(no)
+fi
+AC_SUBST(DATE_FMT_CMD)
+
+dnl
+dnl Documentation
+dnl
+AC_MSG_CHECKING([for yelp-tools])
+have_yelp_tools=no
+m4_ifdef([YELP_HELP_INIT],[
+AC_MSG_RESULT([yes])
+YELP_HELP_INIT
+have_yelp_tools=yes
+])
+if test "x$have_yelp_tools" != "xyes"; then
+  AC_MSG_RESULT([no])
+fi
+AM_CONDITIONAL([HAVE_YELP_TOOLS],[test x$have_yelp_tools = xyes])
+
 AC_CONFIG_FILES([Makefile
 gtk-doc.pc
 gtk-doc.dsl
@@ -254,7 +293,6 @@ AC_CONFIG_FILES([gtkdoc-mktmpl],   [chmod +x gtkdoc-mktmpl])
 AC_CONFIG_FILES([gtkdoc-rebase],   [chmod +x gtkdoc-rebase])
 AC_CONFIG_FILES([gtkdoc-scan],     [chmod +x gtkdoc-scan])
 AC_CONFIG_FILES([gtkdoc-scangobj], [chmod +x gtkdoc-scangobj])
-AC_CONFIG_FILES([gtkdoc-scanobj],  [chmod +x gtkdoc-scanobj])
 AC_CONFIG_FILES([gtkdocize],       [chmod +x gtkdocize])
 AC_CONFIG_FILES([tests/tools.sh],  [chmod +x tests/tools.sh])
 AC_OUTPUT
@@ -271,13 +309,7 @@ test -n "$JADE" \
     || AC_MSG_NOTICE([   SGML support disabled, no jade processor available])
 test -n "$DBLATEX$FOP" \
     && AC_MSG_NOTICE([** XML PDF support enabled, using $DBLATEX$FOP]) \
-    || AC_MSG_NOTICE([   XML PDF support disabled, no fop available])
-test "x$gdu_cv_have_gdu" = "xyes" \
-    && AC_MSG_NOTICE([** Gnome-doc-utils support enabled]) \
-    || AC_MSG_NOTICE([   Gnome-doc-utils support disabled])
-test "x$enable_scrollkeeper" = "xyes" \
-    && AC_MSG_NOTICE([** Scrollkeeper support enabled]) \
-    || AC_MSG_NOTICE([   Scrollkeeper support disabled])
+    || AC_MSG_NOTICE([   XML PDF support disabled, no dblatex or fop available])
 test -n "$HIGHLIGHT" \
     && AC_MSG_NOTICE([** Syntax highlighting of examples enabled, using $HIGHLIGHT]) \
     || AC_MSG_NOTICE([   Syntax highlighting of examples disabled])
@@ -287,4 +319,9 @@ test "x$build_tests" != "xno" \
 test "x$enable_debug" != "xno" \
     && AC_MSG_NOTICE([** Debug tracing enabled]) \
     || AC_MSG_NOTICE([   Debug tracing disabled])
-
+test "x$enable_debug" != "xno" \
+    && AC_MSG_NOTICE([** Debug tracing enabled]) \
+    || AC_MSG_NOTICE([   Debug tracing disabled])
+test "x$have_yelp_tools" != "xno" \
+    && AC_MSG_NOTICE([** Documentation enabled]) \
+    || AC_MSG_NOTICE([   Documentation disabled])

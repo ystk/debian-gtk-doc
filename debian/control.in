@@ -1,9 +1,9 @@
 Source: gtk-doc
 Section: gnome
 Priority: optional
-Maintainer: Loic Minier <lool@dooz.org>
+Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: @GNOME_TEAM@
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
 Build-Depends: cdbs,
                debhelper (>= 8),
                gnome-pkg-tools (>= 0.10),
@@ -18,12 +18,12 @@ Build-Depends-Indep: jade (>= 1.2.1-35),
                      libglib2.0-dev (>= 2.6.0),
                      pkg-config (>= 0.19.0),
                      python (>= 2.3),
-                     gnome-doc-utils (>= 0.3.2),
-                     scrollkeeper
+                     yelp-tools,
+                     bc
 Build-Conflicts-Indep: openjade,
                        openjade1.3
-Vcs-Svn: svn://svn.debian.org/svn/pkg-gnome/desktop/unstable/gtk-doc
-Vcs-Browser: http://svn.debian.org/viewsvn/pkg-gnome/desktop/unstable/gtk-doc
+Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/gtk-doc
+Vcs-Browser: http://anonscm.debian.org/viewvc/pkg-gnome/desktop/unstable/gtk-doc
 
 Package: gtk-doc-tools
 Architecture: all

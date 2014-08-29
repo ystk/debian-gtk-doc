@@ -38,8 +38,14 @@ my $OUTPUT_DIR;
 my $VERBOSE;
 my $PRINT_VERSION;
 my $PRINT_HELP;
-my $TYPE_INIT_FUNC="g_type_init(); g_type_class_ref(G_TYPE_OBJECT)";
+my $TYPE_INIT_FUNC="#if !GLIB_CHECK_VERSION(2,35,0)\n  g_type_init();\n  #endif\n  g_type_class_ref(G_TYPE_OBJECT)";
 my $QUERY_CHILD_PROPERTIES;
+
+my $CC;
+my $LD;
+my $CFLAGS;
+my $LDFLAGS;
+my $RUN;
 
 # --nogtkinit is deprecated, as it is the default now anyway.
 %optctl = (module => \$MODULE,
@@ -48,11 +54,16 @@ my $QUERY_CHILD_PROPERTIES;
            'type-init-func' => \$TYPE_INIT_FUNC,
            'query-child-properties' => \$QUERY_CHILD_PROPERTIES,
            'output-dir' => \$OUTPUT_DIR,
+           'cc' => \$CC,
+           'ld' => \$LD,
+           'cflags' => \$CFLAGS,
+           'ldflags' => \$LDFLAGS,
+           'run' => \$RUN,
            'verbose' => \$VERBOSE,
            'version' => \$PRINT_VERSION,
            'help' => \$PRINT_HELP);
 
-GetOptions(\%optctl, "module=s", "types:s", "output-dir:s", "nogtkinit", "type-init-func:s", "query-child-properties:s", "verbose", "version", "help");
+GetOptions(\%optctl, "module=s", "types:s", "output-dir:s", "nogtkinit", "type-init-func:s", "query-child-properties:s", "cc:s", "ld:s", "run:s", "cflags:s", "ldflags:s", "verbose", "version", "help");
 
 if ($NO_GTK_INIT) {
   # Do nothing. This just avoids a warning.
@@ -78,6 +89,11 @@ gtkdoc-scangobj version @VERSION@ - introspect g-objects
 --query-child-properties=FUNC A function that returns a list of child
                               properties for a class
 --output-dir=DIRNAME          The directory where the results are stored
+--cc=COMPILER                 The compiler to use
+--ld=LINKER                   The linker to use
+--run=RUN                     Command for running the scanner
+--cflags=CFLAGS               Compiler flags
+--ldflags=LDFLAGS             Linker flags
 --verbose                     Print extra output while processing
 --version                     Print the version of this program
 --help                        Print this help
@@ -761,8 +777,6 @@ describe_signed_constant (gsize size, gint64 value)
           desc = g_strdup ("G_MAXINT");
         else if (value == G_MININT)
           desc = g_strdup ("G_MININT");
-        else if (value == (gint64)G_MAXUINT)
-          desc = g_strdup ("G_MAXUINT");
       }
       break;
     case 4:
@@ -771,15 +785,11 @@ describe_signed_constant (gsize size, gint64 value)
           desc = g_strdup ("G_MAXINT");
         else if (value == G_MININT)
           desc = g_strdup ("G_MININT");
-        else if (value == (gint64)G_MAXUINT)
-          desc = g_strdup ("G_MAXUINT");
       }
       if (value == G_MAXLONG)
         desc = g_strdup ("G_MAXLONG");
       else if (value == G_MINLONG)
         desc = g_strdup ("G_MINLONG");
-      else if (value == (gint64)G_MAXULONG)
-        desc = g_strdup ("G_MAXULONG");
       break;
     case 8:
       if (value == G_MAXINT64)
@@ -1143,7 +1153,7 @@ describe_default (GParamSpec *spec)
             break;
 
           if (acc->len > 0)
-            g_string_append (acc, "|");
+            g_string_append (acc, " | ");
           g_string_append (acc, value->value_name);
 
           default_value &= ~value->value;
@@ -1355,11 +1365,21 @@ close OUTPUT;
 
 # Compile and run our file
 
-$CC = $ENV{CC} ? $ENV{CC} : "gcc";
-$LD = $ENV{LD} ? $ENV{LD} : $CC;
-$CFLAGS = $ENV{CFLAGS} ? $ENV{CFLAGS} : "";
-$LDFLAGS = $ENV{LDFLAGS} ? $ENV{LDFLAGS} : "";
-$RUN = $ENV{RUN} ? $ENV{RUN} : "";
+unless ($CC) {
+    $CC = $ENV{CC} ? $ENV{CC} : "gcc";
+}
+unless ($LD) {
+    $LD = $ENV{LD} ? $ENV{LD} : $CC;
+}
+unless ($CFLAGS) {
+    $CFLAGS = $ENV{CFLAGS} ? $ENV{CFLAGS} : "";
+}
+unless ($LDFLAGS) {
+    $LDFLAGS = $ENV{LDFLAGS} ? $ENV{LDFLAGS} : "";
+}
+unless ($RUN) {
+    $RUN = $ENV{RUN} ? $ENV{RUN} : "";
+}
 
 my $o_file;
 if ($CC =~ /libtool/) {
@@ -1379,16 +1399,16 @@ system("($command)") == 0 or die "Compilation of scanner failed: $!\n";
 
 # Linking scanner
 # FIXME: Can we turn off as-needed for the docs (or better fix it?)
-#$command = "$LD -Wl,--no-as-needed $o_file $LDFLAGS -o $MODULE-scan";
-$command = "$LD $stdout $o_file $LDFLAGS -o $MODULE-scan";
+#$command = "$LD -Wl,--no-as-needed $o_file $LDFLAGS -o $MODULE-scan@EXEEXT@";
+$command = "$LD $stdout $o_file $LDFLAGS -o $MODULE-scan@EXEEXT@";
 system("($command)") == 0 or die "Linking of scanner failed: $!\n";
 
 # Running scanner $MODULE-scan ";
-system("($RUN ./$MODULE-scan)") == 0 or die "Scan failed: $!\n";
+system("($RUN ./$MODULE-scan@EXEEXT@)") == 0 or die "Scan failed: $!\n";
 
 
 if (!defined($ENV{"GTK_DOC_KEEP_INTERMEDIATE"})) {
-  unlink "./$MODULE-scan.c", "./$MODULE-scan.o", "./$MODULE-scan.lo", "./$MODULE-scan";
+  unlink "./$MODULE-scan.c", "./$MODULE-scan.o", "./$MODULE-scan.lo", "./$MODULE-scan@EXEEXT@";
 }
 
 &UpdateFileIfChanged ($old_signals_filename, $new_signals_filename, 0);

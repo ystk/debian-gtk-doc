@@ -1,5 +1,8 @@
 <SECTION>
 <FILE>tester</FILE>
+<TITLE>GtkDocTestIf</TITLE>
 test
+GtkDocTestIfInterface
+GtkDocTestIf
 </SECTION>
 
