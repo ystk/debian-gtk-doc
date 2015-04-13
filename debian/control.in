@@ -19,7 +19,8 @@ Build-Depends-Indep: jade (>= 1.2.1-35),
                      pkg-config (>= 0.19.0),
                      python (>= 2.3),
                      yelp-tools,
-                     bc
+                     bc,
+                     dblatex
 Build-Conflicts-Indep: openjade,
                        openjade1.3
 Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/gtk-doc
@@ -41,6 +42,7 @@ Depends: ${misc:Depends},
 Multi-Arch: foreign
 Conflicts: sgml2x (<< 1.0.0-2)
 Recommends: pkg-config (>= 0.19.0)
+Suggests: dblatex
 Description: GTK+ documentation tools
  These tools extract documentation embedded in GNOME source code, and
  produce pretty output via DocBook SGML.

@@ -1,3 +1,15 @@
+gtk-doc (1.21-2) unstable; urgency=low
+
+  * Team upload.
+
+  [ Simon Josefsson ]
+  * Build-depend on dblatex so that gtkdoc-mkpdf works. Closes: #570751.
+
+  [ Andreas Henriksson ]
+  * Suggest dblatex as well since it might be useful at runtime.
+
+ -- Andreas Henriksson <andreas@fatal.se>  Thu, 11 Sep 2014 00:49:29 +0200
+
 gtk-doc (1.21-1) unstable; urgency=medium
 
   * Team upload.

@@ -2,12 +2,11 @@
 # 
 # Modifications should be made to debian/control.in instead.
 # This file is regenerated automatically in the clean target.
-
 Source: gtk-doc
 Section: gnome
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Andreas Henriksson <andreas@fatal.se>, Emilio Pozuelo Monfort <pochu@debian.org>, Josselin Mouette <joss@debian.org>, Martin Pitt <mpitt@debian.org>, Michael Biebl <biebl@debian.org>, Sebastian Dröge <slomo@debian.org>, Sjoerd Simons <sjoerd@debian.org>
+Uploaders: Andreas Henriksson <andreas@fatal.se>, Emilio Pozuelo Monfort <pochu@debian.org>, Josselin Mouette <joss@debian.org>, Martin Pitt <mpitt@debian.org>, Michael Biebl <biebl@debian.org>, Sebastian Dröge <slomo@debian.org>
 Standards-Version: 3.9.5
 Build-Depends: cdbs,
                debhelper (>= 8),
@@ -24,7 +23,8 @@ Build-Depends-Indep: jade (>= 1.2.1-35),
                      pkg-config (>= 0.19.0),
                      python (>= 2.3),
                      yelp-tools,
-                     bc
+                     bc,
+                     dblatex
 Build-Conflicts-Indep: openjade,
                        openjade1.3
 Vcs-Svn: svn://anonscm.debian.org/pkg-gnome/desktop/unstable/gtk-doc
@@ -46,6 +46,7 @@ Depends: ${misc:Depends},
 Multi-Arch: foreign
 Conflicts: sgml2x (<< 1.0.0-2)
 Recommends: pkg-config (>= 0.19.0)
+Suggests: dblatex
 Description: GTK+ documentation tools
  These tools extract documentation embedded in GNOME source code, and
  produce pretty output via DocBook SGML.
